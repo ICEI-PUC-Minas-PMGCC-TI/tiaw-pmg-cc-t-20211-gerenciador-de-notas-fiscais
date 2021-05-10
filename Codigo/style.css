@@ -1,0 +1,174 @@
+/* ------------------ GERAL ------------------ */
+
+* {
+	margin: 0px;
+	padding: 0px;
+	font-family: "Montserrat", sans-serif;
+	font-size: 18px;
+}
+
+html,
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	overflow-x: hidden;
+}
+
+/* ------------------ HEADER ------------------ */
+
+.logo {
+	color: #fff !important;
+	margin-left: 30px;
+}
+
+.login {
+	border-radius: 30px;
+}
+
+.login:hover {
+	background-color: #555;
+}
+
+.collapse li {
+	margin-right: 30px;
+}
+
+.nav-link {
+	color: rgb(224, 224, 224) !important;
+}
+
+.nav-link:hover {
+	color: #fff !important;
+}
+
+.navbar {
+	background-color: #1b2431 !important;
+}
+
+.container-fluid ul {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.cadastro {
+	display: none;
+}
+
+/* ------------------ MAIN - CARROSEL ------------------ */
+.carousel-control-prev,
+.carousel-control-next {
+	display: none;
+}
+
+#carrosel .carousel-indicators button {
+	width: 3px;
+	background-color: #ffa62b;
+	border-radius: 50%;
+	padding: 2px;
+}
+
+h1 {
+	text-align: center;
+}
+/* ------------------ MAIN - LOGIN ------------------ */
+
+#login {
+	background-color: #93c1e7;
+}
+
+.card-login form {
+	display: flex;
+	flex-direction: column;
+}
+
+.card-login {
+	max-width: 50%;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	padding: 20px;
+}
+
+.card-cadastro {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	padding: 20px;
+}
+
+input {
+	border-radius: 5px;
+	padding: 5px;
+	margin-bottom: 5px;
+	border: none;
+	font-size: 0.7em;
+}
+
+#login .botao {
+	margin-top: 15px;
+	width: 120px;
+	border-radius: 20px;
+	background-color: #ffa62b;
+	margin-bottom: 10px;
+	font-size: 0.9em;
+}
+
+#login .botao:hover {
+	background-color: #f89203;
+}
+
+.card-login p,
+.card-cadastro p {
+	font-size: 1.2em;
+	text-align: center;
+}
+
+.esqueci-senha a {
+	font-size: 0.8em;
+	margin-bottom: 0px;
+	text-decoration: none;
+	color: #222;
+}
+
+.esqueci-senha a:hover {
+	color: #444;
+}
+
+/* ------------------ MAIN - SEÇÕES ------------------ */
+
+#como-funciona {
+	background-color: rgb(219, 231, 241);
+}
+
+/* ------------------ FOOTER ------------------ */
+
+footer {
+	background-color: #1b2431;
+}
+
+footer p {
+	color: #fff;
+	font-size: 0.7em;
+}
+
+footer p:last-child {
+	font-size: 0.8rem;
+}
+
+footer h4 {
+	color: #fff;
+	font-size: 0.9em;
+	font-weight: 400;
+}
+
+footer .row {
+	padding-bottom: 20px;
+	padding-top: 20px;
+}
+
+footer i {
+	color: #fff;
+	font-size: 1.8em;
+}
