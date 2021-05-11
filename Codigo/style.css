@@ -16,11 +16,15 @@ body {
 	overflow-x: hidden;
 }
 
+img {
+	width: 100%;
+	max-width: 100%;
+	max-height: 100%;
+}
 /* ------------------ HEADER ------------------ */
 
 .logo {
-	color: #fff !important;
-	margin-left: 30px;
+	width: 100px;
 }
 
 .login {
@@ -47,13 +51,18 @@ body {
 	background-color: #1b2431 !important;
 }
 
+.navbar-nav {
+	max-width: 90vw;
+}
+
 .container-fluid ul {
 	padding-top: 20px;
 	padding-bottom: 20px;
 }
 
-.cadastro {
-	display: none;
+header i {
+	color: #fff;
+	font-size: 2em;
 }
 
 /* ------------------ MAIN - CARROSEL ------------------ */
@@ -64,7 +73,7 @@ body {
 
 #carrosel .carousel-indicators button {
 	width: 3px;
-	background-color: #ffa62b;
+	background-color: #f8c12b;
 	border-radius: 50%;
 	padding: 2px;
 }
@@ -74,28 +83,91 @@ h1 {
 }
 /* ------------------ MAIN - LOGIN ------------------ */
 
-#login {
+#cadastro-section {
 	background-color: #93c1e7;
 }
 
-.card-login form {
-	display: flex;
-	flex-direction: column;
+.card-login input {
+	margin-right: 10px;
 }
 
-.card-login {
+.card-login input:last-child {
+	background-color: #ffa62b;
+	border-radius: 20px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.esqueci-senha a {
+	color: #fff;
+	text-decoration: none;
+	font-size: 0.5em;
+}
+
+.card-login1 {
 	max-width: 50%;
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
-	padding: 20px;
 }
 
+.card-login1 form {
+	min-width: 280px;
+}
+
+.card-login1 input {
+	margin-bottom: 10px;
+	width: 400px;
+	max-width: 90vw;
+}
+
+.card-login1 input:last-child {
+	border-radius: 20px;
+	background-color: #ffa62b;
+	width: 100px;
+	justify-content: center;
+}
+
+.esqueci-senha1 a {
+	color: #fff;
+	text-decoration: none;
+	font-size: 0.5em;
+}
+
+.botao-cadastro a {
+	background-color: #ffa62b;
+	border-radius: 50px;
+	color: #000;
+	text-align: center;
+	padding: 10px;
+	font-size: 1em;
+}
+
+.botao-cadastro {
+	width: 200px;
+}
 .card-cadastro {
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
 	padding: 20px;
+	max-width: 100%;
+}
+
+.card-cadastro input {
+	width: 250px;
+	max-width: 90vw;
+}
+
+.card-senha {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	padding: 20px;
+}
+
+.card-senha input {
+	max-width: 90vw;
 }
 
 input {
@@ -104,9 +176,10 @@ input {
 	margin-bottom: 5px;
 	border: none;
 	font-size: 0.7em;
+	max-width: 100%;
 }
 
-#login .botao {
+#cadastro-section .botao {
 	margin-top: 15px;
 	width: 120px;
 	border-radius: 20px;
@@ -115,25 +188,29 @@ input {
 	font-size: 0.9em;
 }
 
-#login .botao:hover {
+#cadastro-section .botao:hover {
 	background-color: #f89203;
 }
 
 .card-login p,
-.card-cadastro p {
+.card-cadastro p,
+.card-senha p {
 	font-size: 1.2em;
 	text-align: center;
 }
 
-.esqueci-senha a {
-	font-size: 0.8em;
-	margin-bottom: 0px;
+.esqueci-senha1 {
+	margin-top: -5px;
+	margin-left: 5px;
+}
+.esqueci-senha1 a {
+	color: #fff;
 	text-decoration: none;
-	color: #222;
+	font-size: 0.6em;
 }
 
-.esqueci-senha a:hover {
-	color: #444;
+.esqueci-senha1 a:hover {
+	color: rgb(202, 202, 202);
 }
 
 /* ------------------ MAIN - SEÇÕES ------------------ */
@@ -151,6 +228,10 @@ footer {
 footer p {
 	color: #fff;
 	font-size: 0.7em;
+}
+
+span {
+	font-size: 0.9em;
 }
 
 footer p:last-child {
@@ -171,4 +252,223 @@ footer .row {
 footer i {
 	color: #fff;
 	font-size: 1.8em;
+}
+
+/* ------------------ PAGINA CADASTRO ------------------ */
+#cadastro {
+	background-color: rgb(219, 231, 241);
+	min-height: 500px;
+}
+
+#cadastro input {
+	margin-bottom: 20px;
+	font-size: 0.8em;
+	width: 300px;
+}
+
+#cadastro input:last-child {
+	margin-top: 10px;
+	border-radius: 20px;
+	background-color: #f8c12b;
+}
+
+/* ------------------ PAGINA alterar SENHA ------------------ */
+#alterar-senha {
+	background-color: rgb(219, 231, 241);
+	min-height: 400px;
+}
+
+#alterar-senha input {
+	margin-bottom: 20px;
+	font-size: 0.8em;
+	width: 300px;
+}
+
+#alterar-senha input:last-child {
+	margin-top: 10px;
+	border-radius: 20px;
+	background-color: #f8c12b;
+}
+
+/* ------------------ PAGINA APP ------------------ */
+
+.adicionar-nota {
+	background-color: #fff;
+	width: 100%;
+}
+
+.adicionar-nota input {
+	background-color: rgb(230, 230, 230);
+}
+
+.adicionar-nota button {
+	border: 0px;
+	background-color: #fff;
+}
+
+#notas {
+	width: 80%;
+}
+
+#filtros {
+	width: 20%;
+}
+
+.notas {
+	background-color: rgb(230, 230, 230);
+}
+
+.nota {
+	background-color: #fff;
+}
+
+hr {
+	width: 15vw;
+}
+
+.filtrar p {
+	font-size: 1.5em;
+}
+
+.filtros li {
+	list-style: none;
+	margin-bottom: 10px;
+	color: #000;
+}
+
+.icones-ordenar i {
+	font-size: 1.4em;
+}
+
+#filtros a {
+	color: #000;
+}
+/* ------------------ PAGINA APP MEDIUM E SMALL ------------------ */
+
+.adicionar-nota1 {
+	background-color: #fff;
+	width: 100vw;
+}
+.adicionar-nota2 {
+	width: 100vw;
+}
+.adicionar-nota1 input {
+	width: 250px;
+	max-width: 400px;
+	background-color: rgb(230, 230, 230);
+}
+.adicionar-nota1 button {
+	border: 0px;
+	background-color: #fff;
+}
+
+.filtrar1 p {
+	font-size: 1.3em;
+}
+
+select {
+	border: none;
+	border-radius: 5px;
+	background-color: rgb(230, 230, 230);
+}
+
+.flutuante {
+	position: fixed;
+	bottom: 10px;
+	left: 15px;
+}
+
+.flutuante a {
+	text-decoration: none;
+}
+
+.flutuante i {
+	font-size: 3em;
+	color: #1b2431;
+}
+
+.flutuante i:hover {
+	color: #26313f;
+}
+
+#notas i {
+	text-decoration: none;
+	color: #000;
+}
+
+/* ------------------ PAGINA CONTA ------------------ */
+
+.titulo p {
+	font-size: 2em;
+	text-align: center;
+}
+
+.titulo {
+	background-color: rgb(230, 230, 230);
+}
+
+a {
+	text-decoration: none;
+}
+
+#conta a {
+	color: #000;
+}
+
+#conta a > i {
+	font-size: 2em;
+}
+
+.conta {
+	background-color: rgb(230, 230, 230);
+	width: 100vw;
+}
+
+.dados {
+	background-color: #fff;
+	width: 90vw;
+	min-width: 300px;
+	max-width: 500px;
+	border-radius: 5px;
+}
+
+.profile {
+	font-size: 10em;
+}
+
+.label {
+	min-width: 170px;
+}
+
+.adicionar-foto p {
+	text-align: center;
+}
+
+.sair a {
+	text-align: end;
+	font-size: 0.8em;
+}
+
+.sair {
+	min-width: 100%;
+}
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 991px) {
+	.notas {
+		width: 100vw;
+	}
+
+	#carrosel .carousel-indicators button {
+		margin-bottom: -20px;
+	}
+	.texto {
+		text-align: justify;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	#footer h4:last-child {
+		display: none;
+	}
 }
