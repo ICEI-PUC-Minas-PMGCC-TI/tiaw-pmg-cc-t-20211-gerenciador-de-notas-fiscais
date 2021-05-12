@@ -92,10 +92,14 @@ h1 {
 }
 
 .card-login input:last-child {
-	background-color: #ffa62b;
+	background-color: #f8c12b;
 	border-radius: 20px;
 	padding-left: 20px;
 	padding-right: 20px;
+}
+
+.card-login input:last-child:hover {
+	background-color: #ffae00;
 }
 
 .esqueci-senha a {
@@ -123,9 +127,13 @@ h1 {
 
 .card-login1 input:last-child {
 	border-radius: 20px;
-	background-color: #ffa62b;
+	background-color: #f8c12b;
 	width: 100px;
 	justify-content: center;
+}
+
+.card-login1 input:last-child:hover {
+	background-color: #ffae00;
 }
 
 .esqueci-senha1 a {
@@ -135,12 +143,16 @@ h1 {
 }
 
 .botao-cadastro a {
-	background-color: #ffa62b;
+	background-color: #f8c12b;
 	border-radius: 50px;
 	color: #000;
 	text-align: center;
 	padding: 10px;
 	font-size: 1em;
+}
+
+.botao-cadastro a:hover {
+	background-color: #ffae00;
 }
 
 .botao-cadastro {
@@ -183,13 +195,13 @@ input {
 	margin-top: 15px;
 	width: 120px;
 	border-radius: 20px;
-	background-color: #ffa62b;
+	background-color: #f8c12b;
 	margin-bottom: 10px;
 	font-size: 0.9em;
 }
 
 #cadastro-section .botao:hover {
-	background-color: #f89203;
+	background-color: #ffae00;
 }
 
 .card-login p,
@@ -404,7 +416,7 @@ select {
 }
 
 .titulo {
-	background-color: rgb(230, 230, 230);
+	background-color: rgb(219, 231, 241);
 }
 
 a {
@@ -420,7 +432,7 @@ a {
 }
 
 .conta {
-	background-color: rgb(230, 230, 230);
+	background-color: rgb(219, 231, 241);
 	width: 100vw;
 }
 
@@ -447,6 +459,16 @@ a {
 .sair a {
 	text-align: end;
 	font-size: 0.8em;
+}
+
+.sair a:last-child {
+	background-color: #f8c12b;
+	width: 50px;
+	text-align: center;
+	border-radius: 15px;
+	padding: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
 .sair {
