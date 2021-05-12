@@ -284,6 +284,10 @@ footer i {
 	background-color: #f8c12b;
 }
 
+#cadastro input:last-child:hover {
+	background-color: #ffae00;
+}
+
 /* ------------------ PAGINA alterar SENHA ------------------ */
 #alterar-senha {
 	background-color: rgb(219, 231, 241);
@@ -300,6 +304,10 @@ footer i {
 	margin-top: 10px;
 	border-radius: 20px;
 	background-color: #f8c12b;
+}
+
+#alterar-senha input:last-child:hover {
+	background-color: #ffae00;
 }
 
 /* ------------------ PAGINA APP ------------------ */
@@ -469,6 +477,10 @@ a {
 	padding: 5px;
 	padding-left: 10px;
 	padding-right: 10px;
+}
+
+.sair a:last-child:hover {
+	background-color: #ffae00;
 }
 
 .sair {
