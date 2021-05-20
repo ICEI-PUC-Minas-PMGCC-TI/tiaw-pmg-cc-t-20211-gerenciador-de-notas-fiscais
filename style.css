@@ -29,6 +29,7 @@ img {
 
 .login {
 	border-radius: 30px;
+	transition: 0.5s all;
 }
 
 .login:hover {
@@ -96,6 +97,7 @@ h1 {
 	border-radius: 20px;
 	padding-left: 20px;
 	padding-right: 20px;
+	transition: 0.5s all;
 }
 
 .card-login input:last-child:hover {
@@ -130,6 +132,7 @@ h1 {
 	background-color: #f8c12b;
 	width: 100px;
 	justify-content: center;
+	transition: 0.5s all;
 }
 
 .card-login1 input:last-child:hover {
@@ -149,6 +152,7 @@ h1 {
 	text-align: center;
 	padding: 10px;
 	font-size: 1em;
+	transition: 0.5s all;
 }
 
 .botao-cadastro a:hover {
@@ -198,10 +202,12 @@ input {
 	background-color: #f8c12b;
 	margin-bottom: 10px;
 	font-size: 0.9em;
+	transition: 0.5s all;
 }
 
 #cadastro-section .botao:hover {
 	background-color: #ffae00;
+	transform: scale(1.05);
 }
 
 .card-login p,
@@ -282,6 +288,7 @@ footer i {
 	margin-top: 10px;
 	border-radius: 20px;
 	background-color: #f8c12b;
+	transition: 0.5s all;
 }
 
 #cadastro input:last-child:hover {
@@ -304,6 +311,7 @@ footer i {
 	margin-top: 10px;
 	border-radius: 20px;
 	background-color: #f8c12b;
+	transition: 0.5s all;
 }
 
 #alterar-senha input:last-child:hover {
