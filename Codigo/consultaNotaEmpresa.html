@@ -23,11 +23,12 @@ function validarAcesso(){
          if(localStorage.getItem('userKey')==='' || localStorage.getItem('userKey')===null ){
             window.location.href = "index.html";
          }else{
-               getNotaFiscal(null);
+               getEmpresaByNome('', order=null);
 
          }
 
 }
+
 
 function getNotaFiscal(order=null){
 	var listaClientes=null;
@@ -75,6 +76,68 @@ function logout(){
          window.location.href = "index.html";
 
 }
+
+function getNotaFiscalById(){
+	var listaClientes=null;
+    var obj=new XMLHttpRequest();
+
+    obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal/reczMQhxS6YMmJBlU", true);
+
+    obj.setRequestHeader('Authorization','Bearer key11MS9MKtKRPWWJ');
+       listaClientes='2';
+		obj.onreadystatechange = function () {
+				if (obj.readyState === 4 && obj.status === 200) {
+					// Print received data from server
+					//result.innerHTML = this.responseText;
+                    var jsonObj=JSON.parse(this.responseText);
+                    listaClientes='ok';
+				}else{
+                      listaClientes='erro';
+                }
+			};
+   listaClientes=obj.readyState;
+ obj.send();
+ return listaClientes;
+}
+
+function getEmpresaByNome(nome, order=null){
+	var listaClientes=null;
+   var local=document.getElementById("listaNotas");
+    local.innerHTML="Aguardando resposta";
+    var obj=new XMLHttpRequest();
+
+    if(order==='nome'){
+     obj.open("GET",
+     "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=FIND('"+nome+"'%2Cnome)&sort%5B0%5D%5Bfield%5D=nome&sort%5B0%5D%5Bdirection%5D=asc",true);
+     }else if(order==='cnpj'){
+     obj.open("GET",
+     "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=FIND('"+nome+"'%2Cnome)&sort%5B0%5D%5Bfield%5D=CNPJ&sort%5B0%5D%5Bdirection%5D=asc",true);
+
+     }else{
+         obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filNotaFiscalterByFormula=FIND('"+nome+"'%2Cnome)", true);
+    }
+
+    obj.setRequestHeader('Authorization','Bearer key11MS9MKtKRPWWJ');
+		obj.onreadystatechange = function () {
+				if (obj.readyState === 4 && obj.status === 200) {
+					// Print received data from server
+					//result.innerHTML = this.responseText;
+                    var jsonObj=JSON.parse(this.responseText);
+                    listaClientes=jsonObj.records;
+                    var htmls="<table><tr><th><a href='#' onclick='getEmpresaByNome(\"bh\",\"nome\")' >nome</a></th><th><a href='#' onclick='getEmpresaByNome(\"vi\",\"cnpj\")' >CNPJ</a></th><th>numero de Notas fiscais</th></tr>";
+                    for(i=0; i<listaClientes.length; i++){
+                    	htmls+="<tr><td>"+listaClientes[i].fields.nome+"</td><td>"+listaClientes[i].fields.CNPJ+"</td><td><a href='#'> "+listaClientes[i].fields.NotaFiscal.length+" documentos fiscais</a></td></tr>";
+                    }
+                    htmls+='</table>';
+                    local.innerHTML=htmls;
+				}else{
+                	local.innerHTML=obj.responseText;
+                }
+			};
+ obj.send();
+// return listaClientes;
+}
+
 </script>
 </head>
 <BODY onload="validarAcesso();">
@@ -143,9 +206,9 @@ function logout(){
                     <a href=""><i class="fas fa-plus"></i></a>
                     <p class="mb-0 ms-3">Adicionar nota</p>
                     <div class="d-flex flex-row align-items-center ms-5 justify-content-center">
-                        <input class="mb-0" type="search" id="site-search" name="q"
-                            aria-label="Search through site content" placeholder="Pesquisar">
-                        <button class="ms-1" onclick='getNotaFiscal(null);'><i class="fas fa-search"></i></button>
+                        <input class="mb-0" type="search" id="nomeEmpresa" name="nomeEmpresa"
+                            aria-label="Search through site content" placeholder="Informe o nome da empresa.">
+                        <button class="ms-1" onclick='alert(getNotaFiscalById());'><i class="fas fa-search"></i></button>
                     </div>
                 </div>
                 <div class="icones-ordenar">

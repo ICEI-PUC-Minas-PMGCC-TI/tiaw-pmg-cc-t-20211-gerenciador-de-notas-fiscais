@@ -2,10 +2,10 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Organizei</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App - Organizei</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous" />
     <link rel="stylesheet" href="./style.css" />
@@ -14,9 +14,68 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
-</head>
+        
+<script>
+function validarAcesso(){
+         localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autorização para consumo de webserver airtable.
+        // Storage.removeItem('lastname');           // apagar a entrada "lastname"
+        // Storage.clear();                          // apagar tudo o que está no local storage
+}
 
-<body>
+function logout(){
+         Storage.clear();
+}
+
+/*******
+*Função para efetuar o login no sistema.
+*Esta função faz uma requisição ao servidor airtable
+*e solicita um serviço de utilizando o email e senha.
+**@params
+*@senha caracter alfanuméricos.
+*@email caracteres que são permitidos na confecção de um email.
+**********************/
+function validarUsuario(usuario,senha){
+//	var local=document.getElementById("demo");
+  //  local.innerHTML="Aguardando resposta";
+  //desativa o botao para evitar multiplas requisições.
+  document.getElementById("btnlogin").disabled=true;
+var obj=new XMLHttpRequest();
+    obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario?filterByFormula=AND(email%3D'"+usuario+"'%2Csenha%3D'"+senha+"')", true);
+
+    obj.setRequestHeader('Authorization','Bearer '+localStorage.getItem('key'));
+		obj.onreadystatechange = function () {
+				if (obj.readyState === 4 && obj.status === 200) {
+
+					//converte a resposta em json object
+                    var jsonObj=JSON.parse(this.responseText);
+                    var usuario=jsonObj.records;
+                    var htmls;
+                    if(usuario.length>0){   //salva informações na localstoge
+                                         localStorage.setItem('userName',usuario[0].fields.nome); // gravar
+                                         localStorage.setItem('userEmail',usuario[0].fields.email); // gravar
+                                         localStorage.setItem('userCPF',usuario[0].fields.cpf); // gravar
+                                         localStorage.setItem('userKey',usuario[0].id);
+                    	htmls='login efetuado com sucesso!';
+                    	alert(htmls);
+                    	//redicionamento do usuário para dashboard
+                    	 window.location.href = "app.html";
+                     }else{
+                      alert('Falha ao tentar efetuar o login, confirme o email e senha!');
+                    //	local.innerHTML=htmls;
+                    }
+				}else{
+                //	local.innerHTML=obj.status;
+                }
+                 //habilita o botao novamento
+                   document.getElementById("btnlogin").disabled=false;
+			};
+ obj.send();
+
+
+}
+</script>
+</head>
+<BODY onload=" validarAcesso();">
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid d-flex align-content-between">
@@ -32,34 +91,37 @@
                             <a class="nav-link" href="#">InÃ­cio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#footer">Fale conosco</a>
+                            <a class="nav-link" href="#footer" >Fale conosco</a>
                         </li>
                         <li class="nav-item d-md-none d-lg-none">
                             <a class="nav-link cadastro" href="./cadastro.html">Cadastre-se</a>
                         </li>
+                        <!--      trecho de código gerando conflito pois está dubplicado.
                         <li class="nav-item d-lg-none">
-                            <a class="nav-link cadastro" href="#">FaÃ§a login</a>
+                            <a class="nav-link cadastro" href="#" >FaÃ§a login</a>
                         </li>
+
                         <li>
                             <div class="card-login1 d-flex justify-content-center d-flex d-lg-none">
-                                <form class="d-flex flex-column" action="#">
-                                    <input type="text" id="e-mail" name="email" placeholder="E-mail">
-                                    <input type="password" id="senha" name="senha" placeholder="Senha">
-                                    <input type="submit" value="Login">
+                                <form class="d-flex flex-column" action="#" method='post'>
+                                    <input type="text" id="email" name="email" placeholder="E-mail" />
+                                    <input type="password" id="senha" name="senha" placeholder="Senha" />
+                                    <button id='btilogin' type='button' onclick="alert('ok'); " >login</button>
                                 </form>
                                 <div class="esqueci-senha1 d-flex">
                                     <a href="./alterar-senha.html">Esqueci a senha</a>
                                 </div>
                             </div>
                         </li>
+                        !-->
                     </ul>
                 </div>
                 <div class="card-login d-none d-sm-none d-md-none d-lg-flex">
                     <div>
                         <form class="d-flex flex-row" action="#">
-                            <input type="text" id="e-mail" name="email" placeholder="E-mail">
+                            <input type="text" id="email" name="email" placeholder="E-mail">
                             <input type="password" id="senha" name="senha" placeholder="Senha">
-                            <input type="submit" value="Login">
+                            <input type="button" id='btnlogin' value="Login" onclick="validarUsuario(document.getElementById('email').value, document.getElementById('senha').value);" />
                         </form>
                     </div>
                     <div class="esqueci-senha d-flex justify-content-center align-items-center">
@@ -188,18 +250,18 @@
                                     <div class="row">
                                         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                                             <div class="d-flex justify-content-center flex-column">
-                                                <input type="text" id="nome" name="nome" placeholder="Nome completo">
-                                                <input type="text" id="e-mail" name="email" placeholder="E-mail">
-                                                <input type="password" id="senha" name="senha" placeholder="Senha">
+                                                <input type="text" id="nomeca" name="nomes" placeholder="Nome completo">
+                                                <input type="text" id="e-mailca" name="emails" placeholder="E-mail">
+                                                <input type="password" id="senhaca" name="senhas" placeholder="Senha">
                                             </div>
 
                                         </div>
                                         <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                                             <div class="d-flex justify-content-center flex-column">
-                                                <input type="text" id="cpf" name="cpf" placeholder="CPF">
-                                                <input type="text" id="e-mail" name="email"
+                                                <input type="text" id="cpfca" name="cpf" placeholder="CPF">
+                                                <input type="text" id="e-mailca" name="email"
                                                     placeholder="Confirmar E-mail">
-                                                <input type="password" id="senha" name="senha"
+                                                <input type="password" id="ssenha" name="senha"
                                                     placeholder="Confirmar Senha">
                                             </div>
 
@@ -210,6 +272,7 @@
                                     </div>
                                 </form>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
