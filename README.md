@@ -1,6 +1,6 @@
 # Organizei
 
-Página pode ser visualizada através do <a href="https://icei-puc-minas-pmgcc-ti.github.io/tiaw-pmg-cc-t-20211-gerenciador-de-notas-fiscais/">GitHub Pages</a>
+Página pode ser visualizada através do <a href="https://icei-puc-minas-pmgcc-ti.github.io/tiaw-pmg-cc-t-20211-gerenciador-de-notas-fiscais/Codigo">GitHub Pages</a>
 
 . Objetivo do trabalho
 
