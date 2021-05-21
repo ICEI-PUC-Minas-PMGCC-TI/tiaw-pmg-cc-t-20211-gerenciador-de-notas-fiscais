@@ -14,90 +14,92 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" />
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
 		rel="stylesheet" />
-		
- <script>
-function validarAcesso(){
-         localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autorização para consumo de webserver airtable.
 
-         if(localStorage.getItem('userKey')==='' || localStorage.getItem('userKey')===null ){
-            window.location.href = "index.html";
-         }else{
-               getUsuario(localStorage.getItem('userKey'));
-         }
+	<script>
+		function validarAcesso() {
+			localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autorizaï¿½ï¿½o para consumo de webserver airtable.
 
-}
+			if (localStorage.getItem('userKey') === '' || localStorage.getItem('userKey') === null) {
+				window.location.href = "index.html";
+			} else {
+				getUsuario(localStorage.getItem('userKey'));
+			}
+
+		}
 
 
-/*******
-*Função para efetuar o login no sistema.
-*Esta função faz uma requisição ao servidor airtable
-*e solicita um serviço de utilizando o email e senha.
-**@params
-*@senha caracter alfanuméricos.
-*@email caracteres que são permitidos na confecção de um email.
-**********************/
-function getUsuario(userKey){
-    var obj=new XMLHttpRequest();
-    obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/"+userKey, true);
+		/*******
+		*Funï¿½ï¿½o para efetuar o login no sistema.
+		*Esta funï¿½ï¿½o faz uma requisiï¿½ï¿½o ao servidor airtable
+		*e solicita um serviï¿½o de utilizando o email e senha.
+		**@params
+		*@senha caracter alfanumï¿½ricos.
+		*@email caracteres que sï¿½o permitidos na confecï¿½ï¿½o de um email.
+		**********************/
+		function getUsuario(userKey) {
+			var obj = new XMLHttpRequest();
+			obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/" + userKey, true);
 
-    obj.setRequestHeader('Authorization','Bearer '+localStorage.getItem('key'));
-		obj.onreadystatechange = function () {
-        var htmls='';
+			obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+			obj.onreadystatechange = function () {
+				var htmls = '';
 				if (obj.readyState === 4 && obj.status === 200) {
 					//converte a resposta em json object
-                    var jsonObj=JSON.parse(this.responseText);
+					var jsonObj = JSON.parse(this.responseText);
 
-                    document.getElementById('nome').value=jsonObj.fields.nome;
-                    document.getElementById('email').value=jsonObj.fields.email;
+					document.getElementById('nome').value = jsonObj.fields.nome;
+					document.getElementById('email').value = jsonObj.fields.email;
 
-                     document.getElementById('cpf').value=jsonObj.fields.cpf;
-                    document.getElementById('senha').value='';//jsonObj.fields.senha;
+					document.getElementById('cpf').value = jsonObj.fields.cpf;
+					document.getElementById('senha').value = '';//jsonObj.fields.senha;
 				}
 			};
- obj.send();
-}
+			obj.send();
+		}
 
-function atualizarUsuario(keyUser){
-var usuario = {
-        	fields: {
-  nome: document.getElementById('nome').value,
-  cpf: document.getElementById('cpf').value,
-  email: document.getElementById('email').value,
-  senha: document.getElementById('senha').value,
-}
-}
-	document.getElementById("btnAtualizar").disabled=true;
-	var obj=new XMLHttpRequest();
-    obj.open("PATCH", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/"+keyUser, true);
+		function atualizarUsuario(keyUser) {
+			var usuario = {
+				fields: {
+					nome: document.getElementById('nome').value,
+					cpf: document.getElementById('cpf').value,
+					email: document.getElementById('email').value,
+					senha: document.getElementById('senha').value,
+				}
+			}
+			document.getElementById("btnAtualizar").disabled = true;
+			var obj = new XMLHttpRequest();
+			obj.open("PATCH", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/" + keyUser, true);
 
-    obj.setRequestHeader('Authorization','Bearer '+localStorage.getItem('key'));
+			obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
 			obj.setRequestHeader("Content-Type", "application/json");
 
-	var dados = JSON.stringify(usuario);
+			var dados = JSON.stringify(usuario);
 
-	obj.onreadystatechange = function () {
+			obj.onreadystatechange = function () {
 				if (obj.readyState === 4 && obj.status === 200) {
 
 					// Print received data from server
 					//result.innerHTML = this.responseText;
 
-                    alert('Suas informações foram atualizadas com sucesso!');
-				}else{
-                      //alert('Falha ao tentar atualizar informações.');
-                }
-                document.getElementById("btnAtualizar").disabled=false;
+					alert('Suas informaï¿½ï¿½es foram atualizadas com sucesso!');
+				} else {
+					//alert('Falha ao tentar atualizar informaï¿½ï¿½es.');
+				}
+				document.getElementById("btnAtualizar").disabled = false;
 			};
- obj.send(dados);
-}
- </script>
+			obj.send(dados);
+		}
+	</script>
 </head>
 
-<body onload="validarAcesso();" >
+<body onload="validarAcesso();">
 	<header>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<div class="container-fluid d-flex align-content-between">
 				<a href="./index.html"><i class="fas fa-arrow-circle-left"></i></a>
-				<a class="navbar-brand" href="./index.html"><img class="logo" src="./imagens/organizei.png" alt=""></a>
+				<div class="logo-pages">
+					<a class="navbar-brand ms-0" href="index.html"><img src="imagens/organizei.png" alt=""></a>
+				</div>
 			</div>
 		</nav>
 	</header>
@@ -108,7 +110,7 @@ var usuario = {
 				<div class="col-12 d-flex justify-content-center">
 					<div class="card-cadastro">
 						<div>
-							<p>Atualizar informações</p>
+							<p>Atualizar informaï¿½ï¿½es</p>
 						</div>
 						<div>
 							<form action="#">
@@ -118,7 +120,8 @@ var usuario = {
 										<input type="text" id="cpf" name="cpf" placeholder="CPF" />
 										<input type="text" id="email" name="email" placeholder="E-mail" />
 										<input type="password" id="senha" name="senha" placeholder="Senha" />
-										<input type="button" value="Salvar" id='btnAtualizar' class="botao" onclick="atualizarUsuario(localStorage.getItem('userKey'));" />
+										<input type="button" value="Salvar" id='btnAtualizar' class="botao"
+											onclick="atualizarUsuario(localStorage.getItem('userKey'));" />
 									</div>
 								</div>
 							</form>
@@ -136,8 +139,8 @@ var usuario = {
 				class="d-flex flex-sm-row flex-md-column flex-lg-column mb-3 mt-3 justify-content-between justify-content-sm-between">
 				<div>
 					<h4 class="d-none d-sm-none d-md-flex d-lg-flex">Fale conosco</h4>
-					<p class="d-flex d-row mb-0 mb-sm-0 mb-md-2 mb-lg-2"> <span
-							class="d-none d-md-flex d-lg-flex me-1">E-mail: </span>
+					<p class="d-flex d-row mb-0 mb-sm-0 mb-md-2 mb-lg-2"> <span class="d-none d-md-flex d-lg-flex me-1">E-mail:
+						</span>
 						<span class="ms-3 ms-sm-3 ms-md-0 ms-lg-0">xxx@gmail.com</span>
 					</p>
 				</div>
