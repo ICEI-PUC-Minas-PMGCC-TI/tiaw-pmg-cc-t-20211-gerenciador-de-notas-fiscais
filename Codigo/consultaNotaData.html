@@ -36,11 +36,11 @@ function getNotaFiscal(order=null){
     var obj=new XMLHttpRequest();
 
     if(order==='dataEmissao'){
-     obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=dataEmissao&sort%5B0%5D%5Bdirection%5D=asc", true);
+     obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=dataEmissao&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=idUsuario%3D"+localStorage.getItem('userId'), true);
      }else if(order==='valor'){
-     obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=valor&sort%5B0%5D%5Bdirection%5D=asc", true);
+     obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=valor&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=idUsuario%3D"+localStorage.getItem('userId'), true);
      }else{
-         obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal", true);
+         obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&filterByFormula=idUsuario%3D"+localStorage.getItem('userId'), true);
     }
 
     obj.setRequestHeader('Authorization','Bearer key11MS9MKtKRPWWJ');
@@ -83,11 +83,11 @@ function getNotaFiscalByData(dataInicial, dataFinal, order=null){
     var obj=new XMLHttpRequest();
 
     if(order==='dataEmissao'){
-     obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=dataEmissao&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=AND(+IS_BEFORE('"+dataInicial+"'%2C+dataEmissao)%2C+IS_BEFORE(dataEmissao%2C+'"+dataFinal+"')+)", true);
+     obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=dataEmissao&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=AND(+IS_BEFORE('"+dataInicial+"'%2C+dataEmissao)%2C+IS_BEFORE(dataEmissao%2C+'"+dataFinal+"')%2CidUsuario%3D'"+localStorage.getItem('userId')+"')", true);
      }else if(order==='valor'){
-     obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=valor&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=AND(+IS_BEFORE('"+dataInicial+"'%2C+dataEmissao)%2C+IS_BEFORE(dataEmissao%2C+'"+dataFinal+"')+)", true);
+     obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=valor&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=AND(+IS_BEFORE('"+dataInicial+"'%2C+dataEmissao)%2C+IS_BEFORE(dataEmissao%2C+'"+dataFinal+"')+%2CidUsuario%3D'"+localStorage.getItem('userId')+"')", true);
      }else{
-         obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&filterByFormula=AND(+IS_BEFORE('"+dataInicial+"'%2C+dataEmissao)%2C+IS_BEFORE(dataEmissao%2C+'"+dataFinal+"')+)", true);
+         obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&filterByFormula=AND(+IS_BEFORE('"+dataInicial+"'%2C+dataEmissao)%2C+IS_BEFORE(dataEmissao%2C+'"+dataFinal+"')+%2CidUsuario%3D'"+localStorage.getItem('userId')+"')", true);
     }
 
     obj.setRequestHeader('Authorization','Bearer key11MS9MKtKRPWWJ');
