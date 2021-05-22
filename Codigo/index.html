@@ -14,42 +14,43 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
-        
-<script>
-function validarAcesso(){
-         localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autorização para consumo de webserver airtable.
-        // Storage.removeItem('lastname');           // apagar a entrada "lastname"
-        // Storage.clear();                          // apagar tudo o que está no local storage
-}
 
-function logout(){
-         Storage.clear();
-}
+    <script>
+        function validarAcesso() {
+            localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autorizaï¿½ï¿½o para consumo de webserver airtable.
+            // Storage.removeItem('lastname');           // apagar a entrada "lastname"
+            // Storage.clear();                          // apagar tudo o que estï¿½ no local storage
+        }
 
-/*******
-*Função para efetuar o login no sistema.
-*Esta função faz uma requisição ao servidor airtable
-*e solicita um serviço de utilizando o email e senha.
-**@params
-*@senha caracter alfanuméricos.
-*@email caracteres que são permitidos na confecção de um email.
-**********************/
-function validarUsuario(usuario,senha){
-//	var local=document.getElementById("demo");
-  //  local.innerHTML="Aguardando resposta";
-  //desativa o botao para evitar multiplas requisições.
-  document.getElementById("btnlogin").disabled=true;
-var obj=new XMLHttpRequest();
-    obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario?filterByFormula=AND(email%3D'"+usuario+"'%2Csenha%3D'"+senha+"')", true);
+        function logout() {
+            Storage.clear();
+        }
 
-    obj.setRequestHeader('Authorization','Bearer '+localStorage.getItem('key'));
-		obj.onreadystatechange = function () {
-				if (obj.readyState === 4 && obj.status === 200) {
+        /*******
+        *Funï¿½ï¿½o para efetuar o login no sistema.
+        *Esta funï¿½ï¿½o faz uma requisiï¿½ï¿½o ao servidor airtable
+        *e solicita um serviï¿½o de utilizando o email e senha.
+        **@params
+        *@senha caracter alfanumï¿½ricos.
+        *@email caracteres que sï¿½o permitidos na confecï¿½ï¿½o de um email.
+        **********************/
+        function validarUsuario(usuario, senha) {
+            //	var local=document.getElementById("demo");
+            //  local.innerHTML="Aguardando resposta";
+            //desativa o botao para evitar multiplas requisiï¿½ï¿½es.
+            document.getElementById("btnlogin").disabled = true;
+            var obj = new XMLHttpRequest();
+            obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario?filterByFormula=AND(email%3D'" + usuario + "'%2Csenha%3D'" + senha + "')", true);
 
-					//converte a resposta em json object
-                    var jsonObj=JSON.parse(this.responseText);
-                    var usuario=jsonObj.records;
+            obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+            obj.onreadystatechange = function () {
+                if (obj.readyState === 4 && obj.status === 200) {
+
+                    //converte a resposta em json object
+                    var jsonObj = JSON.parse(this.responseText);
+                    var usuario = jsonObj.records;
                     var htmls;
+<<<<<<< HEAD
                     if(usuario.length>0){   //salva informações na localstoge
                                          localStorage.setItem('userName',usuario[0].fields.nome); // gravar
                                          localStorage.setItem('userEmail',usuario[0].fields.email); // gravar
@@ -63,19 +64,34 @@ var obj=new XMLHttpRequest();
                      }else{
                       alert('Falha ao tentar efetuar o login, confirme o email e senha!');
                     //	local.innerHTML=htmls;
+=======
+                    if (usuario.length > 0) {   //salva informaï¿½ï¿½es na localstoge
+                        localStorage.setItem('userName', usuario[0].fields.nome); // gravar
+                        localStorage.setItem('userEmail', usuario[0].fields.email); // gravar
+                        localStorage.setItem('userCPF', usuario[0].fields.cpf); // gravar
+                        localStorage.setItem('userKey', usuario[0].id);
+                        htmls = 'login efetuado com sucesso!';
+                        alert(htmls);
+                        //redicionamento do usuï¿½rio para dashboard
+                        window.location.href = "app.html";
+                    } else {
+                        alert('Falha ao tentar efetuar o login, confirme o email e senha!');
+                        //	local.innerHTML=htmls;
+>>>>>>> 60faa3ab67996bc8ee0de10d07d3c513103b05c5
                     }
-				}else{
-                //	local.innerHTML=obj.status;
+                } else {
+                    //	local.innerHTML=obj.status;
                 }
-                 //habilita o botao novamento
-                   document.getElementById("btnlogin").disabled=false;
-			};
- obj.send();
+                //habilita o botao novamento
+                document.getElementById("btnlogin").disabled = false;
+            };
+            obj.send();
 
 
-}
-</script>
+        }
+    </script>
 </head>
+
 <BODY onload=" validarAcesso();">
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -93,12 +109,12 @@ var obj=new XMLHttpRequest();
                             <a class="nav-link" href="#">InÃ­cio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#footer" >Fale conosco</a>
+                            <a class="nav-link" href="#footer">Fale conosco</a>
                         </li>
                         <li class="nav-item d-md-none d-lg-none">
                             <a class="nav-link cadastro" href="./cadastro.html">Cadastre-se</a>
                         </li>
-                        <!--      trecho de código gerando conflito pois está dubplicado.
+                        <!--      trecho de cï¿½digo gerando conflito pois estï¿½ dubplicado.
                         <li class="nav-item d-lg-none">
                             <a class="nav-link cadastro" href="#" >FaÃ§a login</a>
                         </li>
@@ -123,7 +139,8 @@ var obj=new XMLHttpRequest();
                         <form class="d-flex flex-row" action="#">
                             <input type="text" id="email" name="email" placeholder="E-mail">
                             <input type="password" id="senha" name="senha" placeholder="Senha">
-                            <input type="button" id='btnlogin' value="Login" onclick="validarUsuario(document.getElementById('email').value, document.getElementById('senha').value);" />
+                            <input type="button" id='btnlogin' value="Login"
+                                onclick="validarUsuario(document.getElementById('email').value, document.getElementById('senha').value);" />
                         </form>
                     </div>
                     <div class="esqueci-senha d-flex justify-content-center align-items-center">
@@ -262,7 +279,7 @@ var obj=new XMLHttpRequest();
                                             <div class="d-flex justify-content-center flex-column">
                                                 <input type="text" id="cpfca" name="cpf" placeholder="CPF">
                                                 <input type="text" id="e-mailca" name="email"
-                                                    placeholder="Confirmar E-mail">
+                                                    placeholder="Confirmar E-mail" autocomplete="none">
                                                 <input type="password" id="ssenha" name="senha"
                                                     placeholder="Confirmar Senha">
                                             </div>
@@ -274,7 +291,7 @@ var obj=new XMLHttpRequest();
                                     </div>
                                 </form>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
