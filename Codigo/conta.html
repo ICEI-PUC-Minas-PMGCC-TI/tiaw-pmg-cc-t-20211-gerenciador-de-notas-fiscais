@@ -14,109 +14,110 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
-        
-<script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
 
 
-function logout(){
-         localStorage.clear();
-         alert('logout efetuado com sucesso.');
-         window.location.href = "./index.html";
+        function logout() {
+            localStorage.clear();
+            alert('logout efetuado com sucesso.');
+            window.location.href = "./index.html";
 
-}
+        }
 
-function validarAcesso(){
-         localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autorização para consumo de webserver airtable.
+        function validarAcesso() {
+            localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autorizaï¿½ï¿½o para consumo de webserver airtable.
 
-         if(localStorage.getItem('userKey')==='' || localStorage.getItem('userKey')===null ){
-            window.location.href = "index.html";
-         }else{
-               //preenchendo informaçôes do usuário
-               document.getElementById('userName').innerHTML=localStorage.getItem('userName');
-               document.getElementById('userEmail').innerHTML=localStorage.getItem('userEmail');
-               document.getElementById('userCPF').innerHTML=localStorage.getItem('userCPF');
-         }
+            if (localStorage.getItem('userKey') === '' || localStorage.getItem('userKey') === null) {
+                window.location.href = "index.html";
+            } else {
+                //preenchendo informaï¿½ï¿½es do usuï¿½rio
+                document.getElementById('userName').innerHTML = localStorage.getItem('userName');
+                document.getElementById('userEmail').innerHTML = localStorage.getItem('userEmail');
+                document.getElementById('userCPF').innerHTML = localStorage.getItem('userCPF');
+            }
 
-}
+        }
 
-/*******
-*Função para efetuar o login no sistema.
-*Esta função faz uma requisição ao servidor airtable
-*e solicita um serviço de utilizando o email e senha.
-**@params
-*@senha caracter alfanuméricos.
-*@email caracteres que são permitidos na confecção de um email.
-**********************/
-function getUsuario(userKey){
-	var local=document.getElementById("demo");
-    local.innerHTML="Aguardando resposta";
-    var obj=new XMLHttpRequest();
-    obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/"+userKey, true);
+        /*******
+        *Funï¿½ï¿½o para efetuar o login no sistema.
+        *Esta funï¿½ï¿½o faz uma requisiï¿½ï¿½o ao servidor airtable
+        *e solicita um serviï¿½o de utilizando o email e senha.
+        **@params
+        *@senha caracter alfanumï¿½ricos.
+        *@email caracteres que sï¿½o permitidos na confecï¿½ï¿½o de um email.
+        **********************/
+        function getUsuario(userKey) {
+            var local = document.getElementById("demo");
+            local.innerHTML = "Aguardando resposta";
+            var obj = new XMLHttpRequest();
+            obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/" + userKey, true);
 
-    obj.setRequestHeader('Authorization','Bearer '+localStorage.getItem('key'));
-		obj.onreadystatechange = function () {
-        var htmls='';
-				if (obj.readyState === 4 && obj.status === 200) {
-					//converte a resposta em json object
-                    var jsonObj=JSON.parse(this.responseText);
+            obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+            obj.onreadystatechange = function () {
+                var htmls = '';
+                if (obj.readyState === 4 && obj.status === 200) {
+                    //converte a resposta em json object
+                    var jsonObj = JSON.parse(this.responseText);
 
-                    document.getElementById('nome').value=jsonObj.fields.nome;
-                    document.getElementById('email').value=jsonObj.fields.email;
+                    document.getElementById('nome').value = jsonObj.fields.nome;
+                    document.getElementById('email').value = jsonObj.fields.email;
 
-                     document.getElementById('cpf').value=jsonObj.fields.cpf;
-                    document.getElementById('senha').value=jsonObj.fields.senha;
-				}
-                /*else{
-                	local.innerHTML='Falha ao localizar o usuário na airtable! status: '+obj.readyState+' - '+obj.status+' msg: '+obj.responseText;
-                }  */
-			};
- obj.send();
-}
-
-function atualizarUsuario(keyUser){
-var usuario = {
-        	fields: {
-  nome: document.getElementById('nome').value,
-  cpf: document.getElementById('cpf').value,
-  email: document.getElementById('email').value,
-  senha: document.getElementById('senha').value,
-}
-}
-	var local=document.getElementById("demo");
-	var obj=new XMLHttpRequest();
-    obj.open("PATCH", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/"+keyUser, true);
-
-    obj.setRequestHeader('Authorization','Bearer '+localStorage.getItem('key'));
-			obj.setRequestHeader("Content-Type", "application/json");
-
-	var dados = JSON.stringify(usuario);
-
-	obj.onreadystatechange = function () {
-				if (obj.readyState === 4 && obj.status === 200) {
-
-					// Print received data from server
-					//result.innerHTML = this.responseText;
-
-                    local.innerHTML="<h3>Cliente atualizado com sucesso, aguarde atualizar a lista</h3>";
-				}else{
-                	local.innerHTML=usuario+'<br>'+obj.status;
+                    document.getElementById('cpf').value = jsonObj.fields.cpf;
+                    document.getElementById('senha').value = jsonObj.fields.senha;
                 }
-			};
- obj.send(dados);
-}
+                /*else{
+                    local.innerHTML='Falha ao localizar o usuï¿½rio na airtable! status: '+obj.readyState+' - '+obj.status+' msg: '+obj.responseText;
+                }  */
+            };
+            obj.send();
+        }
 
-</script>
+        function atualizarUsuario(keyUser) {
+            var usuario = {
+                fields: {
+                    nome: document.getElementById('nome').value,
+                    cpf: document.getElementById('cpf').value,
+                    email: document.getElementById('email').value,
+                    senha: document.getElementById('senha').value,
+                }
+            }
+            var local = document.getElementById("demo");
+            var obj = new XMLHttpRequest();
+            obj.open("PATCH", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/" + keyUser, true);
+
+            obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+            obj.setRequestHeader("Content-Type", "application/json");
+
+            var dados = JSON.stringify(usuario);
+
+            obj.onreadystatechange = function () {
+                if (obj.readyState === 4 && obj.status === 200) {
+
+                    // Print received data from server
+                    //result.innerHTML = this.responseText;
+
+                    local.innerHTML = "<h3>Cliente atualizado com sucesso, aguarde atualizar a lista</h3>";
+                } else {
+                    local.innerHTML = usuario + '<br>' + obj.status;
+                }
+            };
+            obj.send(dados);
+        }
+
+    </script>
 </head>
 
-<BODY onload="validarAcesso();" >
+<BODY onload="validarAcesso();">
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid d-flex align-content-between">
                 <a class="d-flex d-sm-flex d-mg-flex d-lg-none" href="app.html"><i
                         class="fas fa-arrow-circle-left"></i></a>
-                        <div class="logo-pages">
-                            <a class="navbar-brand ms-0" href="app.html"><img src="imagens/organizei.png" alt=""></a>
-                        </div>
+                <div class="logo-pages">
+                    <a class="navbar-brand ms-0" href="app.html"><img src="imagens/organizei.png" alt=""></a>
+                </div>
             </div>
         </nav>
     </header>
@@ -153,7 +154,7 @@ var usuario = {
                 </div>
                 <div class="d-flex flex-column flex-sm-column flex-md-row flex-lg-row">
                     <div class="me-2 label mb-1 mb-sm-1 mb-md-4 mb-lg-4 d-flex align-items-center">
-                        <p  class="mb-0">E-mail do usuÃ¡rio:</p>
+                        <p class="mb-0">E-mail do usuÃ¡rio:</p>
                     </div>
                     <div class="dados mb-4">
                         <p id='userEmail' class="mb-0 p-1">joao.silva@sga.pucminas.br</p>

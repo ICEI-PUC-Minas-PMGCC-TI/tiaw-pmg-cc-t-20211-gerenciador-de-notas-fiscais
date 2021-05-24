@@ -14,103 +14,117 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" />
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
 		rel="stylesheet" />
- <script>
-function validarAcesso(){
-         localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autoriza��o para consumo de webserver airtable.
-}
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<script>
+		function validarAcesso() {
+			localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autoriza��o para consumo de webserver airtable.
+		}
 
 
-/*******
-*Fun��o para efetuar o login no sistema.
-*Esta fun��o faz uma requisi��o ao servidor airtable
-*e solicita um servi�o de utilizando o email e senha.
-**@params
-*@senha caracter alfanum�ricos.
-*@email caracteres que s�o permitidos na confec��o de um email.
-**********************/
-function getUsuario(userKey){
-    var obj=new XMLHttpRequest();
-    obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/"+userKey, true);
+		/*******
+		*Fun��o para efetuar o login no sistema.
+		*Esta fun��o faz uma requisi��o ao servidor airtable
+		*e solicita um servi�o de utilizando o email e senha.
+		**@params
+		*@senha caracter alfanum�ricos.
+		*@email caracteres que s�o permitidos na confec��o de um email.
+		**********************/
+		function getUsuario(userKey) {
+			var obj = new XMLHttpRequest();
+			obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/" + userKey, true);
 
-    obj.setRequestHeader('Authorization','Bearer '+localStorage.getItem('key'));
-		obj.onreadystatechange = function () {
-        var htmls='';
+			obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+			obj.onreadystatechange = function () {
+				var htmls = '';
 				if (obj.readyState === 4 && obj.status === 200) {
 					//converte a resposta em json object
-                    var jsonObj=JSON.parse(this.responseText);
+					var jsonObj = JSON.parse(this.responseText);
 
-                    document.getElementById('nome').value=jsonObj.fields.nome;
-                    document.getElementById('email').value=jsonObj.fields.email;
+					document.getElementById('nome').value = jsonObj.fields.nome;
+					document.getElementById('email').value = jsonObj.fields.email;
 
-                     document.getElementById('cpf').value=jsonObj.fields.cpf;
-                    document.getElementById('senha').value='';//jsonObj.fields.senha;
+					document.getElementById('cpf').value = jsonObj.fields.cpf;
+					document.getElementById('senha').value = '';//jsonObj.fields.senha;
 				}
 			};
- obj.send();
-}
+			obj.send();
+		}
 
-function atualizarUsuario(keyUser){
-var usuario = {
-        	fields: {
-  senha: document.getElementById('senha').value,
-}
-}
+		function atualizarUsuario(keyUser) {
+			var usuario = {
+				fields: {
+					senha: document.getElementById('senha').value,
+				}
+			}
 
-//	document.getElementById("btnAtualizar").disabled=true;
+			//	document.getElementById("btnAtualizar").disabled=true;
 
-	var obj=new XMLHttpRequest();
-    obj.open("PATCH", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/"+keyUser, true);
+			var obj = new XMLHttpRequest();
+			obj.open("PATCH", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/" + keyUser, true);
 
-    obj.setRequestHeader('Authorization','Bearer key11MS9MKtKRPWWJ');
+			obj.setRequestHeader('Authorization', 'Bearer key11MS9MKtKRPWWJ');
 			obj.setRequestHeader("Content-Type", "application/json");
 
-	var dados = JSON.stringify(usuario);
+			var dados = JSON.stringify(usuario);
 
-	obj.onreadystatechange = function () {
+			obj.onreadystatechange = function () {
 				if (obj.readyState === 4 && obj.status === 200) {
 
 					// Print received data from server
 					//result.innerHTML = this.responseText;
 
-                    alert('Suas informa��es foram atualizadas com sucesso!');
-				}else{
-                      //alert('Falha ao tentar atualizar informa��es.');
-                }
-               //document.getElementById("btnAtualizar").disabled=false;
+					Swal.fire({
+						icon: 'success',
+						title: 'Suas informações foram atualizadas com sucesso',
+						showConfirmButton: false,
+						timer: 1500,
+					})
+				} else {
+					//alert('Falha ao tentar atualizar informa��es.');
+				}
+				//document.getElementById("btnAtualizar").disabled=false;
 			};
- obj.send(dados);
-}
+			obj.send(dados);
+		}
 
-function validarUsuario(usuario,cpf){
-         var retorno=null;
-         var obj=new XMLHttpRequest();
-         if( document.getElementById('email').value=='' || document.getElementById('cpf').value=='' || document.getElementById('senha').value=='' || document.getElementById('senha').value!=document.getElementById('confirmesenha').value){
-         	alert('preencha o cpf e email!');
-            return;
-         }
-    obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario?filterByFormula=AND(cpf%3D'"+document.getElementById('cpf').value+"'%2C+email%3D'"+document.getElementById('email').value+"')", true);
+		function validarUsuario(usuario, cpf) {
+			var retorno = null;
+			var obj = new XMLHttpRequest();
+			if (document.getElementById('email').value == '' || document.getElementById('cpf').value == '' || document.getElementById('senha').value == '' || document.getElementById('senha').value != document.getElementById('confirmesenha').value) {
+				Swal.fire({
 
-    obj.setRequestHeader('Authorization','Bearer key11MS9MKtKRPWWJ');
-		obj.onreadystatechange = function () {
+					icon: 'warning',
+					title: 'Preecha todos os campos',
+					showConfirmButton: false,
+					timer: 1500,
+
+				})
+				return;
+			}
+			obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario?filterByFormula=AND(cpf%3D'" + document.getElementById('cpf').value + "'%2C+email%3D'" + document.getElementById('email').value + "')", true);
+
+			obj.setRequestHeader('Authorization', 'Bearer key11MS9MKtKRPWWJ');
+			obj.onreadystatechange = function () {
 				if (obj.readyState === 4 && obj.status === 200) {
 
 					//converte a resposta em json object
-                    var jsonObj=JSON.parse(this.responseText);
-                    var usuario=jsonObj.records;
-                    var htmls;
-                    if(usuario.length>0){   //salva informa��es na localstoge
-                          //alterar senha
-                          atualizarUsuario(usuario[0].id);
-	
-                     }
+					var jsonObj = JSON.parse(this.responseText);
+					var usuario = jsonObj.records;
+					var htmls;
+					if (usuario.length > 0) {   //salva informa��es na localstoge
+						//alterar senha
+						atualizarUsuario(usuario[0].id);
+
+					}
 				}
 			};
-			
- obj.send();
- //return retorno;
-}
 
-</script>
+			obj.send();
+			//return retorno;
+		}
+
+	</script>
 </head>
 
 <body onload="validarAcesso();">
@@ -119,8 +133,8 @@ function validarUsuario(usuario,cpf){
 			<div class="container-fluid d-flex align-content-between">
 				<a href="./index.html"><i class="fas fa-arrow-circle-left"></i></a>
 				<div class="logo-pages">
-                    <a class="navbar-brand ms-0" href="index.html"><img src="imagens/organizei.png" alt=""></a>
-                </div>
+					<a class="navbar-brand ms-0" href="index.html"><img src="imagens/organizei.png" alt=""></a>
+				</div>
 			</div>
 			</div>
 		</nav>
@@ -129,24 +143,24 @@ function validarUsuario(usuario,cpf){
 	<main id="alterar-senha" class="d-flex justify-content-center align-items-center">
 
 		<div class="container d-flex justify-content-center">
-					<div class="card-senha">
-						<div>
-							<p>Alterar senha</p>
-						</div>
-							<form action="#">
-								<div class="d-flex justify-content-center">
-									<div class="d-flex justify-content-center flex-column">
-										<input type="text" id="email" name="email" placeholder="E-mail" />
-										<input type="text" id="cpf" name="cpf" placeholder="CPF" />
+			<div class="card-senha">
+				<div>
+					<p>Alterar senha</p>
+				</div>
+				<form action="#">
+					<div class="d-flex justify-content-center">
+						<div class="d-flex justify-content-center flex-column">
+							<input type="text" id="email" name="email" placeholder="E-mail" />
+							<input type="text" id="cpf" name="cpf" placeholder="CPF" />
 
-										<input type="password" id="senha" name="nova-senha" placeholder="Nova senha" />
-										<input type="password" id="confirmesenha" name="confirmar-nova-senha"
-											placeholder="Confirmar Senha" />
-										<input type="button" value="Cadastrar nova senha" onclick=" validarUsuario();" />
-									</div>
-								</div>
-							</form>
-					</div> <!--FIM CARD-SENHA-->
+							<input type="password" id="senha" name="nova-senha" placeholder="Nova senha" />
+							<input type="password" id="confirmesenha" name="confirmar-nova-senha" placeholder="Confirmar Senha" />
+							<input type="button" value="Cadastrar nova senha" onclick=" validarUsuario();" />
+						</div>
+					</div>
+				</form>
+			</div>
+			<!--FIM CARD-SENHA-->
 		</div>
 	</main>
 
@@ -157,8 +171,8 @@ function validarUsuario(usuario,cpf){
 				class="d-flex flex-sm-row flex-md-column flex-lg-column mb-3 mt-3 justify-content-between justify-content-sm-between">
 				<div>
 					<h4 class="d-none d-sm-none d-md-flex d-lg-flex">Fale conosco</h4>
-					<p class="d-flex d-row mb-0 mb-sm-0 mb-md-2 mb-lg-2"> <span
-							class="d-none d-md-flex d-lg-flex me-1">E-mail: </span>
+					<p class="d-flex d-row mb-0 mb-sm-0 mb-md-2 mb-lg-2"> <span class="d-none d-md-flex d-lg-flex me-1">E-mail:
+						</span>
 						<span class="ms-3 ms-sm-3 ms-md-0 ms-lg-0">xxx@gmail.com</span>
 					</p>
 				</div>
