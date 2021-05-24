@@ -9,7 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous" />
     <link rel="stylesheet" href="./style.css" />
-    <script src="https://kit.fontawesome.com/1aa7e9c006.js" crossorigin="anonymous"></script>
 
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
@@ -109,7 +108,7 @@
                             <a class="nav-link" href="#">Início</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#footer">Fale conosco</a>
+                            <a class=" fale-conosco nav-link" href="#">Fale conosco</a>
                         </li>
                         <li class="nav-item d-md-none d-lg-none">
                             <a class="nav-link cadastro" href="./cadastro.html">Cadastre-se</a>
@@ -261,37 +260,21 @@
                 <div class="row">
                     <div class="col-12 d-flex justify-content-center">
                         <div class="card-cadastro">
-                            <div>
-                                <p>Cadastre-se</p>
-                            </div>
-                            <div>
-                                <form action="#">
-                                    <div class="row">
-                                        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                                            <div class="d-flex justify-content-center flex-column">
-                                                <input type="text" id="nomeca" name="nomes" placeholder="Nome completo">
-                                                <input type="text" id="e-mailca" name="emails" placeholder="E-mail">
-                                                <input type="password" id="senhaca" name="senhas" placeholder="Senha">
-                                            </div>
-
-                                        </div>
-                                        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
-                                            <div class="d-flex justify-content-center flex-column">
-                                                <input type="text" id="cpfca" name="cpf" placeholder="CPF">
-                                                <input type="text" id="e-mailca" name="email"
-                                                    placeholder="Confirmar E-mail" autocomplete="none">
-                                                <input type="password" id="ssenha" name="senha"
-                                                    placeholder="Confirmar Senha">
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-center">
-                                        <input type="submit" value="Cadastrar" class="botao">
-                                    </div>
-                                </form>
-                            </div>
-
+                            <p>Cadastre-se</p>
+                            <form action="#">
+                                <div class="formulario-cadastro">
+                                    <input type="text" id="nomeca" name="nomes" placeholder="Nome completo">
+                                    <input type="text" id="cpfca" name="cpf" placeholder="CPF">
+                                    <input type="text" id="e-mailca" name="emails" placeholder="E-mail">
+                                    <input type="text" id="e-mailca" name="email" placeholder="Confirmar E-mail"
+                                        autocomplete="none">
+                                    <input type="password" id="senhaca" name="senhas" placeholder="Senha">
+                                    <input type="password" id="ssenha" name="senha" placeholder="Confirmar Senha">
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <input type="submit" value="Cadastrar" class="botao">
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

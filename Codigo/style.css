@@ -78,6 +78,10 @@ header i {
 	font-size: 2em;
 }
 
+.fale-conosco {
+	transform: translateX(50%);
+}
+
 /* ------------------ MAIN - CARROSEL ------------------ */
 .carousel-control-prev,
 .carousel-control-next {
@@ -182,11 +186,34 @@ h1 {
 	justify-content: center;
 	flex-direction: column;
 	padding: 40px;
-	max-width: 100%;
+	max-width: 80%;
+}
+
+.formulario-cadastro {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.formulario-cadastro {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.formulario-cadastro input {
+	margin-right: 10px;
+}
+
+.formulario-cadastro input:nth-child(2n) {
+	margin-right: 0px;
 }
 
 .card-cadastro input {
-	width: 250px;
+	width: 380px;
+
 	max-width: 90vw;
 }
 
@@ -307,7 +334,7 @@ footer i {
 	margin-bottom: 20px;
 	font-size: 1em;
 	width: 300px;
-	padding: 10px 20px 10px 20px ;
+	padding: 10px 20px 10px 20px;
 }
 
 #cadastro input:last-child {
@@ -346,7 +373,6 @@ footer i {
 
 #alterar-senha input:last-child:hover {
 	background-color: #ffae00;
-
 }
 
 #alterar-senha .container {
@@ -358,7 +384,7 @@ footer i {
 }
 
 #alterar-senha input {
-	padding: 10px 20px 10px 20px ;
+	padding: 10px 20px 10px 20px;
 }
 
 .logo-pages img {
@@ -569,11 +595,10 @@ a {
 	.logo-pages img {
 		width: 100%;
 	}
-	
+
 	.logo-pages {
 		width: 25%;
 	}
-	
 
 	#carrosel .carousel-indicators button {
 		margin-bottom: -20px;
@@ -593,7 +618,6 @@ a {
 	}
 
 	.logo-pages {
-
 		width: 50%;
 	}
 }
