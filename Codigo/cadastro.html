@@ -27,17 +27,43 @@
 		}
 
 		function cadastrarUsuario() {
+
+			var nome = document.getElementById('nome').value.trim();
+			var cpf = document.getElementById('cpf').value.trim();
+			var email = document.getElementById('email').value.trim();
+			var senha = document.getElementById('senha').value;
+
+			//validando os dados do usuário
+			if (nome == null || nome.trim().length === 0 || nome.match(/[^a-zàáéíóúâêôãõ ]/gi)) {
+				alert('O nome é inválido!');
+				return false;
+			}
+			if (cpf == null || cpf.trim().length !== 11 || cpf.match(/[^0-9]/g)) {
+				alert('O CPF é inválido!');
+				return false;
+			}
+			if (email == null || email.trim().length === 0 || !email.match(/^[a-z0-9.]+@[a-z0-9]+.[a-z]+.([a-z]+$)/gi)) {
+				alert('email inválido!');
+				return false;
+
+			}
+			if (senha == null || senha.length === 0) {
+				alert('A senha é inválida!');
+				return false;
+
+			}
+
+			//criando o objeto usuário.
 			var usuario = {
 				records: [{
 					fields: {
-						nome: document.getElementById('nome').value,
-						cpf: document.getElementById('cpf').value,
-						email: document.getElementById('email').value,
-						senha: document.getElementById('senha').value,
+						nome: document.getElementById('nome').value.trim(),
+						cpf: document.getElementById('cpf').value.trim(),
+						email: document.getElementById('email').value.trim(),
+						senha: document.getElementById('senha').value.trim(),
 					}
 				}]
-			}
-			//	var local=document.getElementById("demo");
+			};
 
 			document.getElementById("btnCadastrar").disabled = true;
 
@@ -62,6 +88,12 @@
 					//local.innerHTML=usuario+'<br>'+obj.status;
 					//alert('Erro ao tentar efetuar cadastro, confirme as informa��es!');
 				}
+				document.getElementById('nome').value = '';
+				document.getElementById('cpf').value = '';
+				document.getElementById('email').value = '';
+				document.getElementById('senha').value = '';
+				document.getElementById('confirme_email').value = '';
+				document.getElementById('confirme_senha').value = '';
 				document.getElementById("btnCadastrar").disabled = false;
 				//getUsuarios();
 			};
@@ -89,7 +121,7 @@
 					<p>Cadastre-se</p>
 				</div>
 				<div>
-					<form action="#">
+					<form action="#" method='post' autocomplete='off'>
 						<div class="d-flex justify-content-center">
 							<div class="d-flex justify-content-center flex-column">
 								<input type="text" id="nome" name="nome" placeholder="Nome completo" />
