@@ -16,6 +16,10 @@ body {
 	overflow-x: hidden;
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
 img {
 	width: 100%;
 	max-width: 100%;
@@ -91,10 +95,6 @@ td {
 header i {
 	color: #fff;
 	font-size: 2em;
-}
-
-.fale-conosco {
-	transform: translateX(50%);
 }
 
 /* ------------------ MAIN - CARROSEL ------------------ */
@@ -334,7 +334,7 @@ footer .row {
 	padding-top: 20px;
 }
 
-footer i {
+#footer i {
 	color: #fff;
 	font-size: 1.8em;
 }
