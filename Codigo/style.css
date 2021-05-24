@@ -21,6 +21,21 @@ img {
 	max-width: 100%;
 	max-height: 100%;
 }
+
+td {
+	border-top: 1px solid #666;
+	border-bottom: 1px solid #666;
+	width: 33%;
+}
+
+table {
+	width: 100%;
+}
+
+th,
+td {
+	padding-left: 10px;
+}
 /* ------------------ HEADER ------------------ */
 
 .logo img {
@@ -452,6 +467,11 @@ hr {
 #filtros a {
 	color: #000;
 }
+
+.input-nome-empresa {
+	width: 280px;
+}
+
 /* ------------------ PAGINA APP MEDIUM E SMALL ------------------ */
 
 .adicionar-nota1 {

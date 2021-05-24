@@ -14,6 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
     <script>
@@ -53,11 +54,11 @@
 
                     var htmls = '';
 
-                    var htmls = "<div class='nota d-flex justify-content-between align-items-center p-2 m-2'><table><tr><th><a href='#' onclick='getNotaFiscal(\"dataEmissao\")' >Data emissão</a></th><th><a href='#' onclick='getNotaFiscal(\"valor\")' >Valor</a></th><th>downloads</th></tr>";
+                    var htmls = "<div class='nota d-flex justify-content-between align-items-center p-2 m-2'><table><tr><th><a style='margin-right:10px;' href='#' onclick='getNotaFiscal(\"dataEmissao\")' >Data emissão</a></th><th><a style='margin-right:10px;' href='#' onclick='getNotaFiscal(\"valor\")' >Valor</a></th><th style='text-align:center;'>Downloads</th></tr>";
                     for (i = 0; i < listaClientes.length; i++) {
                         htmls += "<tr><td>" + listaClientes[i].fields.dataEmissao + "</td>";
                         htmls += "<td>" + listaClientes[i].fields.valor + "</td>";
-                        htmls += "<td><div class='me-2'><a href='" + listaClientes[i].fields.documentoFiscal[0].url + "' title='Downloads da nota fiscal.'><i class='fas fa-file-download ms-1'></i></a></div></td></tr>";
+                        htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='" + listaClientes[i].fields.documentoFiscal[0].url + "' title='Baixar nota fiscal'><i style='font-size:1.4rem; margin:10px auto; ' class='fas fa-file-download ms-1'></i></a></div></td></tr>";
                     }
                     htmls += '</table>';
                     local.innerHTML = htmls;
@@ -98,11 +99,11 @@
                     var jsonObj = JSON.parse(this.responseText);
                     listaClientes = jsonObj.records;
 
-                    var htmls = "<div class='nota d-flex justify-content-between align-items-center p-2 m-2'><table><tr><th><a href='#' onclick='getNotaFiscalByData(document.getElementById(\"dataInicial\").value,document.getElementById(\"dataFinal\").value,\"valor\");' >Data emissão</a></th><th><a href='#' onclick='getNotaFiscalByData(document.getElementById(\"dataInicial\").value,document.getElementById(\"dataFinal\").value,\"valor\")' >Valor</a></th><th>downloads</th></tr>";
+                    var htmls = "<div class='nota d-flex justify-content-between align-items-center p-2 m-2'><table><tr><th><a style='margin-right:10px;' href='#' onclick='getNotaFiscalByData(document.getElementById(\"dataInicial\").value,document.getElementById(\"dataFinal\").value,\"valor\");' >Data emissão</a></th><th><a style='margin-right:10px;' href='#' onclick='getNotaFiscalByData(document.getElementById(\"dataInicial\").value,document.getElementById(\"dataFinal\").value,\"valor\")' >Valor</a></th><th>downloads</th></tr>";
                     for (i = 0; i < listaClientes.length; i++) {
                         htmls += "<tr><td>" + listaClientes[i].fields.dataEmissao + "</td>";
                         htmls += "<td>" + listaClientes[i].fields.valor + "</td>";
-                        htmls += "<td><div class='me-2'><a href='" + listaClientes[i].fields.documentoFiscal[0].url + "' title='Downloads da nota fiscal.'><i class='fas fa-file-download ms-1'></i></a></div></td></tr>";
+                        htmls += "<td><div class='me-2'><a href='" + listaClientes[i].fields.documentoFiscal[0].url + "' title='Downloads da nota fiscal.'><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-file-download ms-1'></i></a></div></td></tr>";
                     }
                     htmls += '</table>';
                     local.innerHTML = htmls;
@@ -168,10 +169,10 @@
 
             <div>
                 <ul class="d-flex flex-column justify-content-center">
-                    <li><a href="#">Por data</a></li>
-                    <li><a href="">Por valor</a></li>
+                    <li><a href="./consultaNotaData.html">Por data</a></li>
+                    <li><a href="./consultaNotaEmpresa.html">Por valor</a></li>
                     <li><a href="">Por produto</a> </li>
-                    <li><a href="">Por empresa</a> </li>
+                    <li><a href="./consultaNotaEmpresa.html">Por empresa</a> </li>
                     <li><a href="">Por tipo</a> </li>
                 </ul>
             </div>
@@ -189,7 +190,7 @@
                             <input class="mb-0" type="date" id="dataInicial" name="datainicial"
                                 aria-label="Search through site content" placeholder="Pesquisar">
                         </label>
-                        <label> Data Final
+                        <label style="margin-left: 10px;"> Data Final
                             <input class="mb-0" type="date" id="dataFinal" name="datainicial"
                                 aria-label="Search through site content" placeholder="Pesquisar">
                         </label>
@@ -252,60 +253,6 @@
                     <div class="me-2">
                         <a href=""><i class="fas fa-file-download ms-1"></i></a>
                         <a href=""><i class="fas fa-trash ms-1"></i></a>
-                    </div>
-                </div>
-                <div class="nota d-flex justify-content-between align-items-center p-2 m-2">
-                    <div>
-                        Informações da nota
-                    </div>
-                    <div class="me-2">
-                        <a href=""><i class="fas fa-file-download ms-1"></i></a>
-                        <a href=""><i class="fas fa-trash ms-1"></i></a>
-                    </div>
-                </div>
-                <div class="nota d-flex justify-content-between align-items-center p-2 m-2">
-                    <div>
-                        Informações da nota
-                    </div>
-                    <div class="me-2">
-                        <a href=""><i class="fas fa-file-download ms-1"></i></a>
-                        <a href=""><i class="fas fa-trash ms-1"></i></a>
-                    </div>
-                </div>
-                <div class="nota d-flex justify-content-between align-items-center p-2 m-2">
-                    <div>
-                        Informações da nota
-                    </div>
-                    <div class="me-2">
-                        <a href=""><i class="fas fa-file-download ms-1"></i></a>
-                        <a href=""><i class="fas fa-trash ms-1"></i></a>
-                    </div>
-                </div>
-                <div class="nota d-flex justify-content-between align-items-center p-2 m-2">
-                    <div>
-                        Informações da nota
-                    </div>
-                    <div class="me-2">
-                        <a href=""><i class="fas fa-file-download ms-1"></i></a>
-                        <a href=""><i class="fas fa-trash ms-1"></i></a>
-                    </div>
-                </div>
-                <div class="nota d-flex justify-content-between align-items-center p-2 m-2">
-                    <div>
-                        Informações da nota
-                    </div>
-                    <div class="me-2">
-                        <a href=""><i class="fas fa-file-download ms-1"></i></a>
-                        <a href=""><i class="fas fa-trash ms-1"></i></a>
-                    </div>
-                </div>
-                <div class="nota d-flex justify-content-between align-items-center p-2 m-2">
-                    <div>
-                        Informações da nota
-                    </div>
-                    <div class="me-2">
-                        <a href=""><i class="fas fa-file-download ms-1"></i></a>
-                        <a href=""><i class="fas fa-trash  ms-1"></i></a>
                     </div>
                 </div>
             </div>

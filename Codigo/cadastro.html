@@ -14,95 +14,96 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" />
 	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
 		rel="stylesheet" />
-		
- <script>
- function validarAcesso(){
-         localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autorização para consumo de webserver airtable.
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-         if( (localStorage.getItem('userKey')==='' || localStorage.getItem('userKey')===null) ){
-           // window.location.href = "login.html";
-         }
+	<script>
+		function validarAcesso() {
+			localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autorizaï¿½ï¿½o para consumo de webserver airtable.
 
-}
+			if ((localStorage.getItem('userKey') === '' || localStorage.getItem('userKey') === null)) {
+				// window.location.href = "login.html";
+			}
 
-function cadastrarUsuario(){
-var usuario = {
-		records: [{
-        	fields: {
-  nome: document.getElementById('nome').value,
-  cpf: document.getElementById('cpf').value,
-  email: document.getElementById('email').value,
-  senha: document.getElementById('senha').value,
-}
-}]
-}
-//	var local=document.getElementById("demo");
+		}
 
-    document.getElementById("btnCadastrar").disabled=true;
-    
-	var obj=new XMLHttpRequest();
-    obj.open("POST", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/", true);
+		function cadastrarUsuario() {
+			var usuario = {
+				records: [{
+					fields: {
+						nome: document.getElementById('nome').value,
+						cpf: document.getElementById('cpf').value,
+						email: document.getElementById('email').value,
+						senha: document.getElementById('senha').value,
+					}
+				}]
+			}
+			//	var local=document.getElementById("demo");
 
-  obj.setRequestHeader('Authorization','Bearer '+localStorage.getItem('key'));
-		obj.setRequestHeader("Content-Type", "application/json");
+			document.getElementById("btnCadastrar").disabled = true;
+
+			var obj = new XMLHttpRequest();
+			obj.open("POST", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/", true);
+
+			obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+			obj.setRequestHeader("Content-Type", "application/json");
 
 
-	var dados = JSON.stringify(usuario);
+			var dados = JSON.stringify(usuario);
 
-	obj.onreadystatechange = function () {
+			obj.onreadystatechange = function () {
 				if (obj.readyState === 4 && obj.status === 200) {
 
 					// Print received data from server
 					//result.innerHTML = this.responseText;
 
-                   // local.innerHTML="<h3>Cliente cadastrado com sucesso, aguarde atualizar a lista</h3>";
-                   alert('cadastro efetuado com sucesso!');
-				}else{
-                	//local.innerHTML=usuario+'<br>'+obj.status;
-                	//alert('Erro ao tentar efetuar cadastro, confirme as informações!');
-                }
-                    document.getElementById("btnCadastrar").disabled=false;
-                //getUsuarios();
+					// local.innerHTML="<h3>Cliente cadastrado com sucesso, aguarde atualizar a lista</h3>";
+					alert('cadastro efetuado com sucesso!');
+				} else {
+					//local.innerHTML=usuario+'<br>'+obj.status;
+					//alert('Erro ao tentar efetuar cadastro, confirme as informaï¿½ï¿½es!');
+				}
+				document.getElementById("btnCadastrar").disabled = false;
+				//getUsuarios();
 			};
- obj.send(dados);
-}
- </script>
+			obj.send(dados);
+		}
+	</script>
 </head>
 
-<body onload="validarAcesso();" >
+<body onload="validarAcesso();">
 	<header>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<div class="container-fluid d-flex align-content-between">
 				<a href="./index.html"><i class="fas fa-arrow-circle-left"></i></a>
 				<div class="logo-pages">
-                    <a class="navbar-brand ms-0" href="index.html"><img src="imagens/organizei.png" alt=""></a>
-                </div>
+					<a class="navbar-brand ms-0" href="index.html"><img src="imagens/organizei.png" alt=""></a>
+				</div>
 			</div>
 		</nav>
 	</header>
 
 	<main id="cadastro" class="d-flex justify-content-center align-items-center">
 		<div class="container">
-					<div class="card-cadastro">
-						<div>
-							<p>Cadastre-se</p>
+			<div class="card-cadastro">
+				<div>
+					<p>Cadastre-se</p>
+				</div>
+				<div>
+					<form action="#">
+						<div class="d-flex justify-content-center">
+							<div class="d-flex justify-content-center flex-column">
+								<input type="text" id="nome" name="nome" placeholder="Nome completo" />
+								<input type="text" id="cpf" name="cpf" placeholder="CPF" />
+								<input type="text" id="email" name="email" placeholder="E-mail" />
+								<input type="text" id="confirme_email" name="confirme_email" placeholder="Confirmar E-mail" />
+								<input type="password" id="senha" name="senha" placeholder="Senha" />
+								<input type="password" id="confirme_senha" name="confirme_senha" placeholder="Confirmar Senha" />
+								<input type="button" value="Cadastrar" id='btnCadastrar' class="botao" onclick="cadastrarUsuario();" />
+							</div>
 						</div>
-						<div>
-							<form action="#">
-								<div class="d-flex justify-content-center">
-									<div class="d-flex justify-content-center flex-column">
-										<input type="text" id="nome" name="nome" placeholder="Nome completo" />
-										<input type="text" id="cpf" name="cpf" placeholder="CPF" />
-										<input type="text" id="email" name="email" placeholder="E-mail" />
-										<input type="text" id="confirme_email" name="confirme_email" placeholder="Confirmar E-mail" />
-										<input type="password" id="senha" name="senha" placeholder="Senha" />
-										<input type="password" id="confirme_senha" name="confirme_senha" placeholder="Confirmar Senha" />
-										<input type="button" value="Cadastrar" id='btnCadastrar' class="botao" onclick="cadastrarUsuario();" />
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
+					</form>
+				</div>
+			</div>
 		</div>
 	</main>
 
@@ -113,8 +114,8 @@ var usuario = {
 				class="d-flex flex-sm-row flex-md-column flex-lg-column mb-3 mt-3 justify-content-between justify-content-sm-between">
 				<div>
 					<h4 class="d-none d-sm-none d-md-flex d-lg-flex">Fale conosco</h4>
-					<p class="d-flex d-row mb-0 mb-sm-0 mb-md-2 mb-lg-2"> <span
-							class="d-none d-md-flex d-lg-flex me-1">E-mail: </span>
+					<p class="d-flex d-row mb-0 mb-sm-0 mb-md-2 mb-lg-2"> <span class="d-none d-md-flex d-lg-flex me-1">E-mail:
+						</span>
 						<span class="ms-3 ms-sm-3 ms-md-0 ms-lg-0">xxx@gmail.com</span>
 					</p>
 				</div>
