@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App - Organizei</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous" />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="https://kit.fontawesome.com/1aa7e9c006.js" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <script>
+        function validarAcesso() {
+            localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autoriza��o para consumo de webserver airtable.
+
+            if (localStorage.getItem('userKey') === '' || localStorage.getItem('userKey') === null) {
+                window.location.href = "index.html";
+            } else {
+                getNotaFiscal(null);
+
+            }
+
+        }
+
+        function getNotaFiscal(order = null) {
+            var listaClientes = null;
+            var local = document.getElementById("listaNotas");
+            local.innerHTML = "Aguardando resposta";
+            var obj = new XMLHttpRequest();
+
+            if (order === 'dataEmissao') {
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=dataEmissao&sort%5B0%5D%5Bdirection%5D=asc", true);
+            } else if (order === 'valor') {
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=valor&sort%5B0%5D%5Bdirection%5D=asc", true);
+            } else {
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal", true);
+            }
+
+            obj.setRequestHeader('Authorization', 'Bearer key11MS9MKtKRPWWJ');
+            obj.onreadystatechange = function () {
+                if (obj.readyState === 4 && obj.status === 200) {
+                    // Print received data from server
+                    //result.innerHTML = this.responseText;
+                    var jsonObj = JSON.parse(this.responseText);
+                    listaClientes = jsonObj.records;
+
+                    var htmls = '';
+
+                    var htmls = "<div class='nota d-flex justify-content-between align-items-center p-2 m-2'><table><tr><th><a href='#' onclick='getNotaFiscal(\"dataEmissao\")' >Data emissão</a></th><th><a href='#' onclick='getNotaFiscal(\"valor\")' >Valor</a></th><th style='text-align:center'>Downloads</th></tr>";
+                    for (i = 0; i < listaClientes.length; i++) {
+                        htmls += "<tr><td>" + listaClientes[i].fields.dataEmissao + "</td>";
+                        htmls += "<td>" + listaClientes[i].fields.valor + "</td>";
+                        htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='" + listaClientes[i].fields.documentoFiscal[0].url + "' title='Baixar nota fiscal'><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-file-download ms-1'></i></a></div></td></tr>";
+                    }
+                    htmls += '</table>';
+                    local.innerHTML = htmls;
+                } else {
+                    local.innerHTML = 'Erro ao tentar consultar notas fiscais' + obj.responseText;
+                }
+            };
+            obj.send();
+            // return listaClientes;
+        }
+
+        function logout() {
+            localStorage.clear();
+            alert('logout efetuado com sucesso.');
+            window.location.href = "index.html";
+
+        }
+
+        function getNotaFiscalByValor(valorInicial, valorFinal, order = null) {
+            var listaClientes = null;
+            var local = document.getElementById("listaNotas");
+            local.innerHTML = "Aguardando resposta";
+            var obj = new XMLHttpRequest();
+
+            if (order === 'dataEmissao') {
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=dataEmissao&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=AND(valor%3E%3D" + valorInicial + "%2C+valor%3C%3D" + valorFinal + ")", true);
+            } else if (order === 'valor') {
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=valor&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=AND(valor%3E%3D" + valorInicial + "%2C+valor%3C%3D" + valorFinal + ")", true);
+            } else {
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&filterByFormula=AND(valor%3E%3D" + valorInicial + "%2C+valor%3C%3D" + valorFinal + ")", true);
+            }
+
+            obj.setRequestHeader('Authorization', 'Bearer key11MS9MKtKRPWWJ');
+            obj.onreadystatechange = function () {
+                if (obj.readyState === 4 && obj.status === 200) {
+                    // Print received data from server
+                    //result.innerHTML = this.responseText;
+                    var jsonObj = JSON.parse(this.responseText);
+                    listaClientes = jsonObj.records;
+
+                    var htmls = "<div class='nota d-flex justify-content-between align-items-center p-2 m-2'><table><tr><th><a href='#' onclick='getNotaFiscalByValor(document.getElementById(\"valorInicial\").value,document.getElementById(\"valorFinal\").value,\"dataEmissao\");' title='Ordenar notas fiscais por data de emissão.'>Data emissão</a></th><th><a href='#' onclick='getNotaFiscalByValor(document.getElementById(\"valorInicial\").value,document.getElementById(\"valorFinal\").value,\"valor\")' title='Ordenar notas fiscais por valor.' >Valor</a></th><th>downloads</th></tr>";
+                    for (i = 0; i < listaClientes.length; i++) {
+                        htmls += "<tr><td>" + listaClientes[i].fields.dataEmissao + "</td>";
+                        htmls += "<td>" + listaClientes[i].fields.valor + "</td>";
+                        htmls += "<td><div class='me-2'><a href='" + listaClientes[i].fields.documentoFiscal[0].url + "' title='Downloads da nota fiscal.'><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-file-download ms-1'></i></a></div></td></tr>";
+                    }
+                    htmls += '</table>';
+                    local.innerHTML = htmls;
+                } else { //cadastrarUsuario
+                    local.innerHTML = obj.responseText;
+                }
+            };
+            obj.send();
+            // return listaClientes;
+        }
+
+    </script>
+</head>
+
+<BODY onload="validarAcesso();">
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid d-flex align-content-between">
+                <div class="logo-pages">
+                    <a class="navbar-brand ms-0" href="index.html"><img src="imagens/organizei.png" alt=""></a>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item d-none d-lg-flex">
+                            <a class="nav-link" href="#footer">Fale conosco</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./conta.html">Minha conta</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="logout();">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main id="app" class="d-flex flex-row">
+
+        <!-- BOTAO FLUTUANTE-->
+        <div class="flutuante d-block d-sm-block d-md-none d-lg-none">
+            <a href=""><i class="fas fa-plus-circle"></i></a>
+        </div>
+
+
+        <!-- FORMATACAO FILTROS PARA LARGE DEVICES -->
+        <div id="filtros" class="w-30 filtros d-none d-sm-none d-md-none d-lg-flex flex-column">
+            <div class="d-flex flex-column align-items-center justify-content-center">
+                <div class="filtrar">
+                    <p class="mb-0 pt-3">Filtrar</p>
+                </div>
+                <div>
+                    <hr>
+                </div>
+            </div>
+
+            <div>
+                <ul class="d-flex flex-column justify-content-center">
+                    <li><a href="./consultaNotaData.html">Por data</a></li>
+                    <li><a href="./consultaNotaValor.html">Por valor</a></li>
+                    <li><a href="">Por produto</a> </li>
+                    <li><a href="./consultaNotaEmpresa.html">Por empresa</a> </li>
+                    <li><a href="">Por tipo</a> </li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="notas" class="d-flex flex-column">
+            <!-- FORMATACAO ADICIONAR NOTA PARA LARGE DEVICE -->
+            <div
+                class="adicionar-nota d-none d-sm-none d-md-none d-lg-flex flex-row justify-content-between align-items-center">
+                <div class="d-flex flex-row align-items-center p-3">
+                    <a href=""><i class="fas fa-plus"></i></a>
+                    <p class="mb-0 ms-3">Adicionar nota</p>
+                    <div class="d-flex flex-row align-items-center ms-5 justify-content-center">
+                        <label> Valor inicial
+                            <input class="mb-0" type="text" id="valorInicial" name="valorinicial"
+                                aria-label="Search through site content" placeholder="Informe o valor inicial">
+                        </label>
+                        <label style='margin-left: 10px;'> Valor final
+                            <input class="mb-0" type="text" id="valorFinal" name="valorinicial"
+                                aria-label="Search through site content" placeholder="Informe o valor final">
+                        </label>
+                        <button class="ms-1"
+                            onclick='getNotaFiscalByValor(document.getElementById("valorInicial").value,document.getElementById("valorFinal").value,null);'><i
+                                class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <div class="icones-ordenar">
+                    <a href=""><i class="fas fa-sort-alpha-down me-4"></i></a>
+                    <a href=""><i class="fas fa-sort-alpha-up d-none me-4"></i></a>
+                </div>
+            </div>
+
+            <!-- FORMATACAO FILTROS E ADICIONAR NOTA PARA MEDIUM E SMALL DEVICES -->
+            <div class="adicionar-nota1 d-flex d-lg-none flex-column justify-content-between align-items-center">
+
+                <div class="d-flex w-100 flex-row justify-content-between pt-3 ps-2 pe-4">
+                    <div class="filtrar1">
+                        <p class="mb-2 ms-2 ms-sm-2 ms-md-3 ms-lg-3">Filtrar</p>
+                    </div>
+                    <div>
+                        <select name="filtros" id="filtros-select" class="pe-3 ps-3 pb-1 pt-1">
+                            <option value="data">Por data</option>
+                            <option value="valor">Por valor</option>
+                            <option value="produto">Por produto</option>
+                            <option value="empresa">Por empresa</option>
+                            <option value="empresa">Por tipo</option>
+                        </select>
+                    </div>
+                    <div class="icones-ordenar d-flex justify-content-center align-items-center">
+                        <a href=""><i class="fas fa-sort-alpha-down"></i></a>
+                        <a href=""><i class="fas fa-sort-alpha-up d-none"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="adicionar-nota2 d-flex flex-row align-items-center p-3 justify-content-between">
+
+                        <div class="d-none d-sm-none d-md-flex d-lg-flex flex-row justify-content-center">
+                            <a href=""><i class="fas fa-plus"></i></a>
+                            <p class="mb-0 ms-3">Adicionar nota</p>
+                        </div>
+
+                        <div class="d-flex flex-row align-items-center justify-content-center">
+                            <input class="mb-0" type="search" id="site-search" name="q"
+                                aria-label="Search through site content" placeholder="Pesquisar">
+                            <button class="ms-1 me-2"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LISTA DAS NOTAS -->
+            <div id='listaNotas' class="notas">
+                <div class="nota d-flex justify-content-between align-items-center p-2 m-2">
+                    <div>
+                        Informações da nota
+                    </div>
+                    <div class="me-2">
+                        <a href=""><i class="fas fa-file-download ms-1"></i></a>
+                        <a href=""><i class="fas fa-trash ms-1"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer id="footer">
+        <div
+            class="d-flex flex-column flex-md-row flex-lg-row justify-content-between me-lg-5 ms-lg-5 me-md-3 ms-md-3 me-sm-1 ms-sm-1">
+            <div
+                class="d-flex flex-sm-row flex-md-column flex-lg-column mb-3 mt-3 justify-content-between justify-content-sm-between">
+                <div>
+                    <h4 class="d-none d-sm-none d-md-flex d-lg-flex">Fale conosco</h4>
+                    <p class="d-flex d-row mb-0 mb-sm-0 mb-md-2 mb-lg-2"> <span
+                            class="d-none d-md-flex d-lg-flex me-1">E-mail: </span>
+                        <span class="ms-3 ms-sm-3 ms-md-0 ms-lg-0">xxx@gmail.com</span>
+                    </p>
+                </div>
+                <div class="d-flex flex-row">
+                    <div class="d-flex align-items-center">
+                        <h4 class="mb-0 me-2">Redes Sociais</h4>
+                    </div>
+                    <div class="d-flex ps-2 ps-sm-2 ps-md-0 ps-lg-0 pe-3 pe-sm-3 pe-md-0 pe-lg-0  align-items-center">
+                        <i class="fab fa-instagram"></i>
+                        <i class="fab fa-whatsapp ms-2"></i>
+                    </div>
+
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-center">
+                <p class="mb-3 mb-sm-3 mb-md-0 mb-lg-0">
+                    &copy; 2021 Todos os direitos reservados
+                </p>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
