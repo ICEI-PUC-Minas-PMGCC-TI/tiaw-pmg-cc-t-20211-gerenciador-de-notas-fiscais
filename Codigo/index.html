@@ -49,21 +49,6 @@
                     var jsonObj = JSON.parse(this.responseText);
                     var usuario = jsonObj.records;
                     var htmls;
-<<<<<<< HEAD
-                    if(usuario.length>0){   //salva informações na localstoge
-                                         localStorage.setItem('userName',usuario[0].fields.nome); // gravar
-                                         localStorage.setItem('userEmail',usuario[0].fields.email); // gravar
-                                         localStorage.setItem('userCPF',usuario[0].fields.cpf); // gravar
-                                         localStorage.setItem('userKey',usuario[0].id);
-					localStorage.setItem('userId',usuario[0].fields.id);
-                    	htmls='login efetuado com sucesso!';
-                    	alert(htmls);
-                    	//redicionamento do usuário para dashboard
-                    	 window.location.href = "app.html";
-                     }else{
-                      alert('Falha ao tentar efetuar o login, confirme o email e senha!');
-                    //	local.innerHTML=htmls;
-=======
                     if (usuario.length > 0) {   //salva informaï¿½ï¿½es na localstoge
                         localStorage.setItem('userName', usuario[0].fields.nome); // gravar
                         localStorage.setItem('userEmail', usuario[0].fields.email); // gravar
@@ -76,7 +61,6 @@
                     } else {
                         alert('Falha ao tentar efetuar o login, confirme o email e senha!');
                         //	local.innerHTML=htmls;
->>>>>>> 60faa3ab67996bc8ee0de10d07d3c513103b05c5
                     }
                 } else {
                     //	local.innerHTML=obj.status;
