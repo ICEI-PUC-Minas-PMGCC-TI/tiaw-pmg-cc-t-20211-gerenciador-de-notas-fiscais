@@ -35,13 +35,13 @@
             local.innerHTML = "Aguardando resposta";
             var obj = new XMLHttpRequest();
 
-    if(order==='dataEmissao'){
-     obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=dataEmissao&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=idUsuario%3D"+localStorage.getItem('userId'), true);
-     }else if(order==='valor'){
-     obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=valor&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=idUsuario%3D"+localStorage.getItem('userId'), true);
-     }else{
-         obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&filterByFormula=idUsuario%3D'"+localStorage.getItem('userId')+"'", true);
-    }
+            if (order === 'dataEmissao') {
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=dataEmissao&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=idUsuario%3D" + localStorage.getItem('userId'), true);
+            } else if (order === 'valor') {
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=valor&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=idUsuario%3D" + localStorage.getItem('userId'), true);
+            } else {
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&filterByFormula=idUsuario%3D'" + localStorage.getItem('userId') + "'", true);
+            }
 
             obj.setRequestHeader('Authorization', 'Bearer key11MS9MKtKRPWWJ');
             obj.onreadystatechange = function () {
@@ -150,10 +150,6 @@
                         <button class="ms-1" onclick='getNotaFiscal(null);'><i class="fas fa-search"></i></button>
                     </div>
                 </div>
-                <div class="icones-ordenar">
-                    <a href=""><i class="fas fa-sort-alpha-down me-4"></i></a>
-                    <a href=""><i class="fas fa-sort-alpha-up d-none me-4"></i></a>
-                </div>
             </div>
 
             <!-- FORMATACAO FILTROS E ADICIONAR NOTA PARA MEDIUM E SMALL DEVICES -->
@@ -171,10 +167,6 @@
                             <option value="empresa">Por empresa</option>
                             <option value="empresa">Por tipo</option>
                         </select>
-                    </div>
-                    <div class="icones-ordenar d-flex justify-content-center align-items-center">
-                        <a href=""><i class="fas fa-sort-alpha-down"></i></a>
-                        <a href=""><i class="fas fa-sort-alpha-up d-none"></i></a>
                     </div>
                 </div>
 
