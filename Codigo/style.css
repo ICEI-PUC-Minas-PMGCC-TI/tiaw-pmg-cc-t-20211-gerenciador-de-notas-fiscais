@@ -115,6 +115,20 @@ h1 {
 }
 /* ------------------ MAIN - LOGIN ------------------ */
 
+#btnLoginMobile {
+	border-radius: 20px;
+	border-color: transparent;
+	background-color: #f8c12b;
+	width: 100px;
+	justify-content: center;
+	transition: 0.5s all;
+	margin-bottom: 10px;
+}
+
+#btnLoginMobile:hover {
+	background-color: #ffae00;
+}
+
 #cadastro-section {
 	background-color: #93c1e7;
 }
@@ -276,8 +290,12 @@ input {
 	transform: scale(1.05);
 }
 
+.card-cadastro p {
+	font-size: 1.8rem;
+	text-align: center;
+}
+
 .card-login p,
-.card-cadastro p,
 .card-senha p {
 	font-size: 1.2em;
 	text-align: center;
@@ -630,6 +648,10 @@ a {
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 991px) {
+	.formulario-cadastro input {
+		margin-right: 0px;
+	}
+
 	.notas {
 		width: 100vw;
 	}
