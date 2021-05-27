@@ -36,6 +36,17 @@
         function validarUsuario(usuario, senha) {
             //	var local=document.getElementById("demo");
             //  local.innerHTML="Aguardando resposta";
+            //validando email e senha.
+			if (usuario == null || usuario.trim().length === 0 || !usuario.match(/^[a-z0-9.]+@[a-z0-9]+.[a-z]+.([a-z]+$)/gi)) {
+				alert('E-mail inválido!');
+				return false;
+
+			}
+			if (senha == null || senha.length === 0) {
+				alert('A senha é inválida!');
+				return false;
+
+			}            
             //desativa o botao para evitar multiplas requisi��es.
             document.getElementById("btnlogin").disabled = true;
             var obj = new XMLHttpRequest();
@@ -72,6 +83,148 @@
 
 
         }
+//funçoes para cadastrar o usuario.
+function getUsuarioByEmail(email, funcao) {
+			var retorno = null;
+			var obj = new XMLHttpRequest();
+			obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario?filterByFormula={email}%3D'" + email + "'", true);
+
+			obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+			obj.onreadystatechange = function () {
+				if (obj.readyState === 4 && obj.status === 200) {
+					//converte a resposta em json object
+					var jsonObj = JSON.parse(this.responseText);
+					var usuario = jsonObj.records;
+					var htmls;
+					if (usuario.length <= 0) {   //salva informa��es na localstoge
+						funcao();
+						retorno = jsonObj;
+					} else {
+						alert('O e-mail ' + email + ' ja esta cadastrado!');
+						return;
+					}
+				}
+			};
+			obj.send();
+
+			return retorno;
+		}
+
+		function getUsuarioByCPF(cpf, callback) {
+			var obj = new XMLHttpRequest();
+			obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario?filterByFormula={cpf}%3D'" + cpf + "'", true);
+
+			obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+			obj.onreadystatechange = function () {
+				if (obj.readyState === 4 && obj.status === 200) {
+
+					//converte a resposta em json object
+					var jsonObj = JSON.parse(this.responseText);
+					var usuario = jsonObj.records;
+					var htmls;
+					if (usuario.length <= 0) {
+						callback();
+						return jsonObj;
+					} else {
+						alert('O cpf ' + cpf + ' ja esta cadastrado!');
+						return;
+					}
+				}
+			};
+			obj.send();
+			return null;
+		}
+
+		function validarAcesso() {
+			localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autoriza��o para consumo de webserver airtable.
+
+			if ((localStorage.getItem('userKey') === '' || localStorage.getItem('userKey') === null)) {
+				// window.location.href = "login.html";
+			}
+
+		}
+
+		function cadastrarUsuario() {
+			//pegando os dados do formulario de cadastro do usuario
+			var nome = document.getElementById('cadastroUsuarioNome').value.trim();
+			var cpf = document.getElementById('cadastroUsuarioCPF').value.trim();
+			var email = document.getElementById('cadastroUsuarioEmail').value.trim();
+			var senha = document.getElementById('cadastroUsuarioSenha').value;
+			var confirme_senha = document.getElementById('cadastroUsuarioConfirmeSenha').value.trim();
+			var confirme_email = document.getElementById('cadastroUsuarioConfirmeEmail').value;
+
+			//validando os dados do usuário
+			if (nome == null || nome.trim().length === 0 || nome.match(/[^a-zàáéíóúâêôãõ ]/gi)) {
+				alert('O nome é inválido!');
+				return false;
+			}
+			if (cpf == null || cpf.trim().length !== 11 || cpf.match(/[^0-9]/g)) {
+				alert('O CPF é inválido!');
+				return false;
+			}
+			if (email == null || email.trim().length === 0 || !email.match(/^[a-z0-9.]+@[a-z0-9]+.[a-z]+.([a-z]+$)/gi)) {
+				alert('E-mail inválido!');
+				return false;
+
+			}
+			if (senha == null || senha.length === 0) {
+				alert('A senha é inválida!');
+				return false;
+
+			}
+			//verifica se a senha e igual a senha confirmada.
+			if (senha !== confirme_senha) {
+				alert('Confirme a senha!');
+				return false;
+			}
+			//verifica se o email e igual a email confirmado.
+			if (email !== confirme_email) {
+				alert('Confirme o email.');
+				return false;
+			}
+
+			//verifica se o email do usuario esta cadastrado.
+			var pesquisaEmail = getUsuarioByEmail(email, getUsuarioByCPF(cpf, function () {
+				//efetua cadastro
+				var usuario = {
+					records: [{
+						fields: {
+							nome: document.getElementById('cadastroUsuarioNome').value.trim(),
+			                cpf: document.getElementById('cadastroUsuarioCPF').value.trim(),
+			                email: document.getElementById('cadastroUsuarioEmail').value.trim(),
+			                senha: document.getElementById('cadastroUsuarioSenha').value,
+						}
+					}]
+				};
+
+				document.getElementById("btnCadastrarUsuario").disabled = true;
+
+				var obj = new XMLHttpRequest();
+				obj.open("POST", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario/", true);
+
+				obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+				obj.setRequestHeader("Content-Type", "application/json");
+
+
+				var dados = JSON.stringify(usuario);
+
+				obj.onreadystatechange = function () {
+					if (obj.readyState === 4 && obj.status === 200) {
+						alert('cadastro efetuado com sucesso!');
+					}
+					//limpando o formulario.
+                    document.getElementById('cadastroUsuarioNome').value='';
+			        document.getElementById('cadastroUsuarioCPF').value='';
+			        document.getElementById('cadastroUsuarioEmail').value='';
+			        document.getElementById('cadastroUsuarioSenha').value='';
+					document.getElementById("btnCadastrarUsuario").disabled = false;
+				};
+				obj.send(dados);
+
+			}));
+
+		}
+
     </script>
 </head>
 
@@ -97,24 +250,24 @@
                         <li class="nav-item d-md-none d-lg-none">
                             <a class="nav-link cadastro" href="./cadastro.html">Cadastre-se</a>
                         </li>
-                        <!--      trecho de c�digo gerando conflito pois est� dubplicado.
+                        <!--      trecho de c�digo gerando conflito pois est� dubplicado. !-->
                         <li class="nav-item d-lg-none">
                             <a class="nav-link cadastro" href="#" >Faça login</a>
                         </li>
 
                         <li>
                             <div class="card-login1 d-flex justify-content-center d-flex d-lg-none">
-                                <form class="d-flex flex-column" action="#" method='post'>
-                                    <input type="text" id="email" name="email" placeholder="E-mail" />
-                                    <input type="password" id="senha" name="senha" placeholder="Senha" />
-                                    <button id='btilogin' type='button' onclick="alert('ok'); " >login</button>
+                                <form class="d-flex flex-column" action="#" method='post' id="frmLoginMobile">
+                                    <input type="text" id="loginMobileEmail" name="email" placeholder="E-mail" />
+                                    <input type="password" id="loginMobileSenha" name="senha" placeholder="Senha" />
+                                    <button id='btnLoginMobile' type='button' onclick="validarUsuario(document.getElementById('loginMobileSenha').value), document.getElementById('loginMobileEmail').value " >login</button>
                                 </form>
                                 <div class="esqueci-senha1 d-flex">
                                     <a href="./alterar-senha.html">Esqueci a senha</a>
                                 </div>
                             </div>
                         </li>
-                        !-->
+                        <!-- fim do codigo para login no mobile !-->
                     </ul>
                 </div>
                 <div class="card-login d-none d-sm-none d-md-none d-lg-flex flex-column">
@@ -272,18 +425,18 @@
                     <div class="col-12 d-flex justify-content-center">
                         <div class="card-cadastro">
                             <p>Cadastre-se</p>
-                            <form action="#">
-                                <div class="formulario-cadastro">
-                                    <input type="text" id="nomeca" name="nomes" placeholder="Nome completo">
-                                    <input type="text" id="cpfca" name="cpf" placeholder="CPF">
-                                    <input type="text" id="e-mailca" name="emails" placeholder="E-mail">
-                                    <input type="text" id="e-mailca" name="email" placeholder="Confirmar E-mail"
+                            <form action="#" onsubmit="return false;" name="frmCadastroUsuario" id="frmCadastroUsuario" meth="POST" >
+                                <div class="formulario-cadastro" >
+                                    <input type="text" id="cadastroUsuarioNome" name="nome" placeholder="Nome completo">
+                                    <input type="text" id="cadastroUsuarioCPF" name="cpf" placeholder="CPF" maxlength="11">
+                                    <input type="text" id="cadastroUsuarioEmail" name="email" placeholder="E-mail">
+                                    <input type="text" id="cadastroUsuarioConfirmeEmail" name="confirmeEmail" placeholder="Confirmar E-mail"
                                         autocomplete="none">
-                                    <input type="password" id="senhaca" name="senhas" placeholder="Senha">
-                                    <input type="password" id="ssenha" name="senha" placeholder="Confirmar Senha">
+                                    <input type="password" id="cadastroUsuarioSenha" name="senha" placeholder="Senha">
+                                    <input type="password" id="cadastroUsuarioConfirmeSenha" name="confirme_senha" placeholder="Confirmar Senha">
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <input type="submit" value="Cadastrar" class="botao">
+                                    <input type="submit" id='btnCadastrarUsuario' value="Cadastrar" onclick="cadastrarUsuario();" class="botao">
                                 </div>
                             </form>
                         </div>
