@@ -367,6 +367,35 @@ footer .row {
 	font-size: 2em;
 }
 
+#atualizar {
+	background-color: rgb(219, 231, 241);
+	min-height: 500px;
+	padding: 40px 0;
+}
+
+#atualizar input {
+	margin-bottom: 20px;
+	font-size: 1em;
+	width: 300px;
+	padding: 10px 20px 10px 20px;
+}
+
+#atualizar input:last-child {
+	margin-top: 10px;
+	border-radius: 20px;
+	background-color: #f8c12b;
+	transition: 0.5s all;
+}
+
+#atualizar input:last-child:hover {
+	background-color: #ffae00;
+}
+
+#atualizar p {
+	font-size: 2em;
+	margin-bottom: 40px;
+}
+
 /* ------------------ PAGINA alterar SENHA ------------------ */
 #alterar-senha {
 	background-color: rgb(219, 231, 241);
