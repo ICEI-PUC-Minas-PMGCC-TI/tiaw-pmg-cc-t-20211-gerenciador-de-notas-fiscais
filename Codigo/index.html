@@ -260,7 +260,7 @@ function getUsuarioByEmail(email, funcao) {
                                 <form class="d-flex flex-column" action="#" method='post' id="frmLoginMobile">
                                     <input type="text" id="loginMobileEmail" name="email" placeholder="E-mail" />
                                     <input type="password" id="loginMobileSenha" name="senha" placeholder="Senha" />
-                                    <button id='btnLoginMobile' type='button' onclick="validarUsuario(document.getElementById('loginMobileEmail').value), document.getElementById('loginMobileSenha').value " >login</button>
+                                    <button id='btnLoginMobile' type='button' onclick="validarUsuario(document.getElementById('loginMobileEmail').value, document.getElementById('loginMobileSenha').value); " >login</button>
                                 </form>
                                 <div class="esqueci-senha1 d-flex">
                                     <a href="./alterar-senha.html">Esqueci a senha</a>
