@@ -17,6 +17,57 @@
 	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	<script>
+ function getUsuarioByEmail(email, funcao) {
+	 		var retorno= null;
+            var obj = new XMLHttpRequest();
+            obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario?filterByFormula={email}%3D'" + email + "'", true);
+
+            obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+            obj.onreadystatechange = function () {
+                if (obj.readyState === 4 && obj.status === 200) {
+                    //converte a resposta em json object
+                    var jsonObj = JSON.parse(this.responseText);
+                    var usuario = jsonObj.records;
+                    var htmls;
+                    if(usuario.length<=0){   //salva informa��es na localstoge
+						funcao();
+						retorno= jsonObj;
+                     }else{
+						 alert('O e-mail '+email+' ja esta cadastrado!');
+						 return;
+					 }
+                }
+            };
+            obj.send();
+			
+			return retorno;
+        }
+
+		function getUsuarioByCPF(cpf, callback) {
+            var obj = new XMLHttpRequest();
+            obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario?filterByFormula={cpf}%3D'" + cpf + "'", true);
+
+            obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+            obj.onreadystatechange = function () {
+                if (obj.readyState === 4 && obj.status === 200) {
+
+                    //converte a resposta em json object
+                    var jsonObj = JSON.parse(this.responseText);
+                    var usuario = jsonObj.records;
+                    var htmls;
+                    if(usuario.length<=0){   
+						callback();
+						return jsonObj;
+                     }else{
+						alert('O cpf '+cpf+' ja esta cadastrado!');
+						return;
+                    }
+                }
+            };
+            obj.send();
+			return null;
+        }
+
 		function validarAcesso() {
 			localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autoriza��o para consumo de webserver airtable.
 
@@ -27,11 +78,13 @@
 		}
 
 		function cadastrarUsuario() {
-
+			//pegando os dados do formulario de cadastro do usuario
 			var nome = document.getElementById('nome').value.trim();
 			var cpf = document.getElementById('cpf').value.trim();
 			var email = document.getElementById('email').value.trim();
 			var senha = document.getElementById('senha').value;
+			var confirme_senha=document.getElementById('confirme_senha').value.trim();
+			var confirme_email=document.getElementById('confirme_email').value;
 
 			//validando os dados do usuário
 			if (nome == null || nome.trim().length === 0 || nome.match(/[^a-zàáéíóúâêôãõ ]/gi)) {
@@ -52,9 +105,21 @@
 				return false;
 
 			}
+			//verifica se a senha e igual a senha confirmada.
+			if( senha!==confirme_senha){
+				alert('Confirme a senha!');
+				return false;
+			}
+			//verifica se o email e igual a email confirmado.
+			if( email!==confirme_email){
+				alert('Confirme o email.');
+				return false;
+			}
 
-			//criando o objeto usuário.
-			var usuario = {
+			//verifica se o email do usuario esta cadastrado.
+			var pesquisaEmail=getUsuarioByEmail(email, getUsuarioByCPF(cpf, function (){ 
+				//efetua cadastro
+				var usuario = {
 				records: [{
 					fields: {
 						nome: document.getElementById('nome').value.trim(),
@@ -78,16 +143,9 @@
 
 			obj.onreadystatechange = function () {
 				if (obj.readyState === 4 && obj.status === 200) {
-
-					// Print received data from server
-					//result.innerHTML = this.responseText;
-
-					// local.innerHTML="<h3>Cliente cadastrado com sucesso, aguarde atualizar a lista</h3>";
 					alert('cadastro efetuado com sucesso!');
-				} else {
-					//local.innerHTML=usuario+'<br>'+obj.status;
-					//alert('Erro ao tentar efetuar cadastro, confirme as informa��es!');
-				}
+				} 
+				//limpando o formulario.
 				document.getElementById('nome').value = '';
 				document.getElementById('cpf').value = '';
 				document.getElementById('email').value = '';
@@ -98,6 +156,9 @@
 				//getUsuarios();
 			};
 			obj.send(dados);
+
+			}) );
+
 		}
 	</script>
 </head>
