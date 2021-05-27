@@ -74,12 +74,13 @@
 					// Print received data from server
 					//result.innerHTML = this.responseText;
 
-					Swal.fire({
+					/*Swal.fire({
 						icon: 'success',
 						title: 'Suas informações foram atualizadas com sucesso',
 						showConfirmButton: false,
 						timer: 1500,
-					})
+					})*/
+					alert('suas informaçoes foram atualizadas com sucesso.')
 				} else {
 					//alert('Falha ao tentar atualizar informa��es.');
 				}
@@ -92,14 +93,15 @@
 			var retorno = null;
 			var obj = new XMLHttpRequest();
 			if (document.getElementById('email').value == '' || document.getElementById('cpf').value == '' || document.getElementById('senha').value == '' || document.getElementById('senha').value != document.getElementById('confirmesenha').value) {
-				Swal.fire({
+				/*Swal.fire({
 
 					icon: 'warning',
 					title: 'Preecha todos os campos',
 					showConfirmButton: false,
 					timer: 1500,
 
-				})
+				});*/
+				alert('preencha todos os campos');
 				return;
 			}
 			obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Usuario?filterByFormula=AND(cpf%3D'" + document.getElementById('cpf').value + "'%2C+email%3D'" + document.getElementById('email').value + "')", true);
