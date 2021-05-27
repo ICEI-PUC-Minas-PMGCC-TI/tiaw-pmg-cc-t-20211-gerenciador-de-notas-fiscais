@@ -236,7 +236,6 @@ h1 {
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
-	margin: 100px;
 }
 
 .fa-arrow-circle-left {
@@ -399,7 +398,8 @@ footer .row {
 /* ------------------ PAGINA alterar SENHA ------------------ */
 #alterar-senha {
 	background-color: rgb(219, 231, 241);
-	min-height: 400px;
+	min-height: 500px;
+	padding: 40px 0;
 }
 
 #alterar-senha input {
@@ -420,11 +420,12 @@ footer .row {
 }
 
 #alterar-senha .container {
-	padding: 30px;
+	padding: 40px;
 }
 
 #alterar-senha p {
 	font-size: 2em;
+	margin-bottom: 40px;
 }
 
 #alterar-senha input {
