@@ -575,9 +575,10 @@ select {
 
 /* ------------------ PAGINA CONTA ------------------ */
 
-.titulo p {
+.titulo h1 {
 	font-size: 2em;
 	text-align: center;
+	padding-top: 50px;
 }
 
 .titulo {
@@ -599,7 +600,7 @@ a {
 .conta {
 	background-color: rgb(219, 231, 241);
 	width: 100vw;
-	padding: 50px 0 50px 0;
+	padding: 0px 0 50px 0;
 }
 
 .dados {
