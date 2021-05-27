@@ -59,6 +59,11 @@
 		}
 
 		function atualizarUsuario(keyUser) {
+			if (document.getElementById('nome').value == '' || document.getElementById('email').value == '' || document.getElementById('cpf').value == '' || document.getElementById('senha').value == '') {
+				alert("Preencha todos os campos!");
+				return;
+			}
+
 			var usuario = {
 				fields: {
 					nome: document.getElementById('nome').value,
@@ -82,7 +87,7 @@
 					// Print received data from server
 					//result.innerHTML = this.responseText;
 
-					alert('Suas informa��es foram atualizadas com sucesso!');
+					alert('Suas informações foram atualizadas com sucesso!');
 				} else {
 					//alert('Falha ao tentar atualizar informações.');
 				}
