@@ -29,7 +29,7 @@
 
         }
 
-        function getNotaFiscal(order = null,direcao=null) {
+        function getNotaFiscal(order = null, direcao = null) {
             var listaClientes = null;
             var local = document.getElementById("listaNotas");
             var linkTableData, linkTableValor, dir;
@@ -38,30 +38,30 @@
             var obj = new XMLHttpRequest();
 
             if (order === 'dataEmissao') {
-                if(direcao=='desc'){
-                    dir='desc';
-                    linkTableData="<a href='#' onclick='getNotaFiscal(\"dataEmissao\", \"asc\")' title='Ordenar notas fiscais por data em ordem crescente.' >Data emissão <i class='fas fa-sort-up'></i></a>";
-                    linkTableValor="<a href='#' onclick='getNotaFiscal(\"valor\", \"asc\")' title='Ordenar notas fiscais por valor em ordem crescente.'>Valor <i class='fas fa-sort'></i></a>";
-                }else{
-                    dir='asc';
-                    linkTableData="<a href='#' onclick='getNotaFiscal(\"dataEmissao\", \"desc\")' title='Ordenar notas fiscais por data em ordem decrescente.'>Data emissão <i class='fas fa-sort-down'></i></a>";
-                    linkTableValor="<a href='#' onclick='getNotaFiscal(\"valor\", \"asc\")' title='Ordenar notas fiscais por valor em ordem crescente.'>Valor <i class='fas fa-sort'></i></a>";
+                if (direcao == 'desc') {
+                    dir = 'desc';
+                    linkTableData = "<a href='#' onclick='getNotaFiscal(\"dataEmissao\", \"asc\")' title='Ordenar notas fiscais por data em ordem crescente.' >Data emissão <i class='fas fa-sort-up'></i></a>";
+                    linkTableValor = "<a href='#' onclick='getNotaFiscal(\"valor\", \"asc\")' title='Ordenar notas fiscais por valor em ordem crescente.'>Valor <i class='fas fa-sort'></i></a>";
+                } else {
+                    dir = 'asc';
+                    linkTableData = "<a href='#' onclick='getNotaFiscal(\"dataEmissao\", \"desc\")' title='Ordenar notas fiscais por data em ordem decrescente.'>Data emissão <i class='fas fa-sort-down'></i></a>";
+                    linkTableValor = "<a href='#' onclick='getNotaFiscal(\"valor\", \"asc\")' title='Ordenar notas fiscais por valor em ordem crescente.'>Valor <i class='fas fa-sort'></i></a>";
                 }
-                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=dataEmissao&sort%5B0%5D%5Bdirection%5D="+dir+"&filterByFormula=idUsuario%3D" + localStorage.getItem('userId'), true);
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=dataEmissao&sort%5B0%5D%5Bdirection%5D=" + dir + "&filterByFormula=idUsuario%3D" + localStorage.getItem('userId'), true);
             } else if (order === 'valor') {
-                if(direcao=='desc'){
-                    dir='desc';
-                    linkTableValor="<a href='#' onclick='getNotaFiscal(\"valor\", \"asc\")' title='Ordenar notas fiscais por valor em ordem crescente.'>Valor <i class='fas fa-sort-up'></i></a>";
-                    linkTableData="<a href='#' onclick='getNotaFiscal(\"dataEmissao\", \"asc\")'title='Ordenar notas fiscais por data em ordem crescente.' >Data emissão <i class='fas fa-sort'></i></a>";
-                }else{
-                    dir='asc';
-                    linkTableValor="<a href='#' onclick='getNotaFiscal(\"valor\", \"desc\")' title='Ordenar notas fiscais por valor em ordem decrescente.'>Valor <i class='fas fa-sort-down'></i></a>";
-                    linkTableData="<a href='#' onclick='getNotaFiscal(\"dataEmissao\", \"asc\")' title='Ordenar notas fiscais por data em ordem crescente.'>Data emissão <i class='fas fa-sort'></i></a>";
+                if (direcao == 'desc') {
+                    dir = 'desc';
+                    linkTableValor = "<a href='#' onclick='getNotaFiscal(\"valor\", \"asc\")' title='Ordenar notas fiscais por valor em ordem crescente.'>Valor <i class='fas fa-sort-up'></i></a>";
+                    linkTableData = "<a href='#' onclick='getNotaFiscal(\"dataEmissao\", \"asc\")'title='Ordenar notas fiscais por data em ordem crescente.' >Data emissão <i class='fas fa-sort'></i></a>";
+                } else {
+                    dir = 'asc';
+                    linkTableValor = "<a href='#' onclick='getNotaFiscal(\"valor\", \"desc\")' title='Ordenar notas fiscais por valor em ordem decrescente.'>Valor <i class='fas fa-sort-down'></i></a>";
+                    linkTableData = "<a href='#' onclick='getNotaFiscal(\"dataEmissao\", \"asc\")' title='Ordenar notas fiscais por data em ordem crescente.'>Data emissão <i class='fas fa-sort'></i></a>";
                 }
                 obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=valor&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=idUsuario%3D" + localStorage.getItem('userId'), true);
-            } else {                
-                linkTableValor="<a href='#' onclick='getNotaFiscal(\"valor\", \"asc\")' title='Ordenar notas fiscais por valor em ordem crescente.'>Valor <i class='fas fa-sort'></i></a>";
-                linkTableData="<a href='#' onclick='getNotaFiscal(\"dataEmissao\", \"asc\")' title='Ordenar notas fiscais por data em ordem crescente.' >Data emissão <i class='fas fa-sort'></i></a>";
+            } else {
+                linkTableValor = "<a href='#' onclick='getNotaFiscal(\"valor\", \"asc\")' title='Ordenar notas fiscais por valor em ordem crescente.'>Valor <i class='fas fa-sort'></i></a>";
+                linkTableData = "<a href='#' onclick='getNotaFiscal(\"dataEmissao\", \"asc\")' title='Ordenar notas fiscais por data em ordem crescente.' >Data emissão <i class='fas fa-sort'></i></a>";
                 obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&filterByFormula=idUsuario%3D'" + localStorage.getItem('userId') + "'", true);
             }
 
@@ -75,7 +75,7 @@
 
                     var htmls = '';
 
-                    var htmls = "<div class='nota d-flex justify-content-between align-items-center p-2 m-2'><table><tr><th>"+linkTableData+"</th><th>"+linkTableValor+"</th><th style='text-align:center;'>Downloads</th></tr>";
+                    var htmls = "<div class='nota d-flex justify-content-between align-items-center p-2 m-2'><table><tr><th>" + linkTableData + "</th><th>" + linkTableValor + "</th><th style='text-align:center;'>Downloads</th></tr>";
                     for (i = 0; i < listaClientes.length; i++) {
                         htmls += "<tr><td>" + listaClientes[i].fields.dataEmissao + "</td>";
                         htmls += "<td>" + listaClientes[i].fields.valor + "</td>";
@@ -154,7 +154,6 @@
                     <li><a href="./consultaNotaValor.html">Por valor</a></li>
                     <li><a href="">Por produto</a> </li>
                     <li><a href="./consultaNotaEmpresa.html">Por empresa</a> </li>
-                    <li><a href="">Por tipo</a> </li>
                 </ul>
             </div>
         </div>
@@ -187,7 +186,6 @@
                             <option value="valor">Por valor</option>
                             <option value="produto">Por produto</option>
                             <option value="empresa">Por empresa</option>
-                            <option value="empresa">Por tipo</option>
                         </select>
                     </div>
                 </div>
@@ -312,4 +310,5 @@
         integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
         crossorigin="anonymous"></script>
 </body>
+
 </html>
