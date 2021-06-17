@@ -29,6 +29,25 @@
 
         }
 
+		function getEmpresa(empresaKey) {
+			var obj = new XMLHttpRequest();
+            var nome=null;
+			obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa/" + empresaKey, false);
+
+			obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+			obj.onreadystatechange = function () {
+				var htmls = '';
+				if (obj.readyState === 4 && obj.status === 200) {
+					//converte a resposta em json object
+					var jsonObj = JSON.parse(this.responseText);
+					nome= jsonObj.fields.nome;
+				}
+			};
+			obj.send();
+            return nome;
+		}
+
+
         function getNotaFiscal(order = null, direcao = null) {
             var listaClientes = null;
             var local = document.getElementById("listaNotas");
@@ -62,7 +81,7 @@
             } else {
                 linkTableValor = "<a href='#' onclick='getNotaFiscal(\"valor\", \"asc\")' title='Ordenar notas fiscais por valor em ordem crescente.'>Valor <i class='fas fa-sort'></i></a>";
                 linkTableData = "<a href='#' onclick='getNotaFiscal(\"dataEmissao\", \"asc\")' title='Ordenar notas fiscais por data em ordem crescente.' >Data emissão <i class='fas fa-sort'></i></a>";
-                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&filterByFormula=idUsuario%3D'" + localStorage.getItem('userId') + "'", true);
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=Empresa&fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&filterByFormula=idUsuario%3D'" + localStorage.getItem('userId') + "'", true);
             }
 
             obj.setRequestHeader('Authorization', 'Bearer key11MS9MKtKRPWWJ');
@@ -75,10 +94,11 @@
 
                     var htmls = '';
 
-                    var htmls = "<div class='nota d-flex justify-content-between align-items-center p-2 m-2'><table><tr><th>" + linkTableData + "</th><th>" + linkTableValor + "</th><th style='text-align:center;'>Downloads</th></tr>";
+                    var htmls = "<div class='nota d-flex justify-content-between align-items-center p-2 m-2'><table><tr><th>" + linkTableData + "</th><th>" + linkTableValor + "</th><th>Empresa</th><th style='text-align:center;'>Downloads</th></tr>";
                     for (i = 0; i < listaClientes.length; i++) {
                         htmls += "<tr><td>" + listaClientes[i].fields.dataEmissao + "</td>";
                         htmls += "<td>" + listaClientes[i].fields.valor + "</td>";
+                        htmls+="<td>"+getEmpresa(listaClientes[i].fields.Empresa[0])+"</td>";
                         htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='" + listaClientes[i].fields.documentoFiscal[0].url + "' title='Baixar nota fiscal.' target='_blank'><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-file-download ms-1'></i></a></div></td></tr>";
                     }
                     htmls += '</table>';
@@ -164,13 +184,24 @@
                 class="adicionar-nota d-none d-sm-none d-md-none d-lg-flex flex-row justify-content-between align-items-center">
                 <div class="d-flex flex-row align-items-center p-3">
                     <a href=""><i class="fas fa-plus"></i></a>
+                    <p class="mb-0 ms-3">Adicionar empresa</p>
+
+                    <a href=""><i class="fas fa-plus"></i></a>
                     <p class="mb-0 ms-3">Adicionar nota</p>
+                </div>
+                <!--
+                <div class="d-flex flex-row align-items-center p-3">
+                    <a href=""><i class="fas fa-plus"></i></a>
+                    <p class="mb-0 ms-3">Adicionar nota</p>
+                    
                     <div class="d-flex flex-row align-items-center ms-5 justify-content-center">
                         <input class="mb-0" type="search" id="site-search" name="q"
                             aria-label="Search through site content" placeholder="Pesquisar">
-                        <button class="ms-1" onclick='getNotaFiscal(null);'><i class="fas fa-search"></i></button>
+                        <button class="ms-1" onclick='alert("cadastrar nota");''><i class="fas fa-search"></i></button>
                     </div>
+                    
                 </div>
+                !-->
             </div>
 
             <!-- FORMATACAO FILTROS E ADICIONAR NOTA PARA MEDIUM E SMALL DEVICES -->
