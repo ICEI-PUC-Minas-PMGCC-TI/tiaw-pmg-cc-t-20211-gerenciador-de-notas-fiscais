@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Cadastrar</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous" />
+	<link rel="stylesheet" href="./style.css" />
+	<script src="https://kit.fontawesome.com/1aa7e9c006.js" crossorigin="anonymous"></script>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" />
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+		rel="stylesheet" />
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<script>
+function validarAcesso() {
+    localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autoriza��o para consumo de webserver airtable.
+
+    if (localStorage.getItem('userKey') === '' || localStorage.getItem('userKey') === null) {
+        window.location.href = "index.html";
+    } else {
+        if( typeof localStorage.getItem('empresaKey') == 'undefined'){
+            window.location.href="cadastrarEmpresa.html";
+            return;
+        }
+        var emps=getEmpresa(localStorage.getItem('empresaKey'));
+        if( typeof emps == 'undefined'){
+            window.location.href="cadastrarEmpresa.html";
+            return;
+        }       
+        document.getElementById('nomeEmpresa').value=emps.nome;
+        document.getElementById('cnpjEmpresa').value=emps.CNPJ;
+    }
+
+}
+
+function getEmpresa(empresaKey) {
+    var obj = new XMLHttpRequest();
+    var nome=null;
+    obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa/" + empresaKey, false);
+
+    obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+    obj.onreadystatechange = function () {
+        var htmls = '';
+        if (obj.readyState === 4 && obj.status === 200) {
+            //converte a resposta em json object
+            var jsonObj = JSON.parse(this.responseText);
+            nome= jsonObj.fields;
+        }
+    };
+    obj.send();
+    return nome;
+}
+
+function atualizarUsuario(empresaKey) {
+//pega dados
+empresa=document.getElementById('nomeEmpresa').value.trim();
+    cnpj=document.getElementById('cnpjEmpresa').value.trim();
+    //valida informaçoes
+    if(empresa.length===0){
+        alert('O nome da empresa deve ser informado!');
+        return false;
+    }
+
+    if(cnpj.length===0){
+        alert('O cnpj deve ser informado!');
+        return false;
+    }
+
+    if(cnpj.length!==14){
+        alert('O cnpj e invalido!');
+        return false;
+    }
+
+
+//cria estrutura de dados
+var empresaJson={
+        fields:{
+            nome: empresa,
+            CNPJ: cnpj,      
+        }
+    };
+    
+			document.getElementById("btnAtualizar").disabled = true;
+			var obj = new XMLHttpRequest();
+			obj.open("PATCH", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa/" + empresaKey, true);
+
+			obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+			obj.setRequestHeader("Content-Type", "application/json");
+
+			var dados = JSON.stringify(empresaJson);
+
+			obj.onreadystatechange = function () {
+				if (obj.readyState === 4 && obj.status === 200) {
+
+					// Print received data from server
+					//result.innerHTML = this.responseText;
+
+					alert('Suas informações foram atualizadas com sucesso!');
+                    window.location.href="cadastrarEmpresa.html";
+				} else {
+					//alert('Falha ao tentar atualizar informações.');
+				}
+				document.getElementById("btnAtualizar").disabled = false;
+			};
+			obj.send(dados);
+		}
+	</script>
+</head>
+
+<body onload="validarAcesso();">
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<div class="container-fluid d-flex align-content-between">
+				<a href="./index.html"><i class="fas fa-arrow-circle-left"></i></a>
+				<div class="logo-pages">
+					<a class="navbar-brand ms-0" href="index.html"><img src="imagens/organizei.png" alt=""></a>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<main id="cadastro" class="d-flex justify-content-center align-items-center">
+		<div class="container d-flex justify-content-center">
+			<div class="card-cadastro">
+				<div>
+					<p>Cadastre-se</p>
+				</div>
+				<div>
+					<form action="#" method='post' autocomplete='off'>
+						<div class="d-flex justify-content-center">
+							<div class="d-flex justify-content-center flex-column">
+								<input type="text" id="nomeEmpresa" name="nomeEmpresa" placeholder="Nome da empresa" />
+								<input type="text" id="cnpjEmpresa" name="cnpjEmpresa" placeholder="CPF" />
+								<input type="button" value="Salvar" id='btnAtualizar' class="botao" onclick="atualizarUsuario(localStorage.getItem('empresaKey'));" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<footer id="footer">
+		<div
+			class="d-flex flex-column flex-md-row flex-lg-row justify-content-between me-lg-5 ms-lg-5 me-md-3 ms-md-3 me-sm-1 ms-sm-1">
+			<div
+				class="d-flex flex-sm-row flex-md-column flex-lg-column mb-3 mt-3 justify-content-between justify-content-sm-between">
+				<div>
+					<h4 class="d-none d-sm-none d-md-flex d-lg-flex">Fale conosco</h4>
+					<p class="d-flex d-row mb-0 mb-sm-0 mb-md-2 mb-lg-2"> <span class="d-none d-md-flex d-lg-flex me-1">E-mail:
+						</span>
+						<span class="ms-3 ms-sm-3 ms-md-0 ms-lg-0">xxx@gmail.com</span>
+					</p>
+				</div>
+				<div class="d-flex flex-row">
+					<div class="d-flex align-items-center">
+						<h4 class="mb-0 me-2">Redes Sociais</h4>
+					</div>
+					<div class="d-flex ps-2 ps-sm-2 ps-md-0 ps-lg-0 pe-3 pe-sm-3 pe-md-0 pe-lg-0  align-items-center">
+						<i class="fab fa-instagram"></i>
+						<i class="fab fa-whatsapp ms-2"></i>
+					</div>
+
+				</div>
+			</div>
+			<div class="d-flex align-items-center justify-content-center">
+				<p class="mb-3 mb-sm-3 mb-md-0 mb-lg-0">
+					&copy; 2021 Todos os direitos reservados
+				</p>
+			</div>
+		</div>
+	</footer>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>
