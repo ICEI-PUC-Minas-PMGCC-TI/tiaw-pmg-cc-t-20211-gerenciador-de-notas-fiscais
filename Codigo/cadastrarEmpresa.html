@@ -80,13 +80,14 @@ function getEmpresa(empresaKey) {
 function getEmpresaByCNPJ(cnpj, funcao) {
 			var retorno = null;
 			var obj = new XMLHttpRequest();
-			obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?filterByFormula={cnpj}%3D'" + cnpj + "'", true);
-
+            obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?filterByFormula=AND(idUsuario%3D'"+ localStorage.getItem('userId')+"'%2CCNPJ%3D'"+cnpj+"')", true);
 			obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+            
 			obj.onreadystatechange = function () {
 				if (obj.readyState === 4 && obj.status === 200) {
 					//converte a resposta em json object
 					var jsonObj = JSON.parse(this.responseText);
+                    
 					var usuario = jsonObj.records;
 					var htmls;
 					if (usuario.length <= 0) {   //salva informa��es na localstoge
@@ -429,13 +430,13 @@ function deletaNota( notaFiscalKey){
 
             if (order === 'nome') {
                 obj.open("GET",
-                    "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=FIND('" + nome + "'%2Cnome)&sort%5B0%5D%5Bfield%5D=nome&sort%5B0%5D%5Bdirection%5D=asc", true);
+                    "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=AND(idUsuario%3D'" + localStorage.getItem('userId') + "'%2CFIND('" + nome + "'%2Cnome))&sort%5B0%5D%5Bfield%5D=nome&sort%5B0%5D%5Bdirection%5D=asc", true);
             } else if (order === 'cnpj') {
                 obj.open("GET",
-                    "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=FIND('" + nome + "'%2Cnome)&sort%5B0%5D%5Bfield%5D=CNPJ&sort%5B0%5D%5Bdirection%5D=asc", true);
+                    "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=AND(idUsuario%3D'" + localStorage.getItem('userId') + "'%2C=FIND('" + nome + "'%2Cnome))&sort%5B0%5D%5Bfield%5D=CNPJ&sort%5B0%5D%5Bdirection%5D=asc", true);
 
             } else {
-                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filNotaFiscalterByFormula=FIND('" + nome + "'%2Cnome)", true);
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=AND(idUsuario%3D'" + localStorage.getItem('userId') + "'%2C=FIND('" + nome + "'%2Cnome))", true);
             }
 
             obj.setRequestHeader('Authorization', 'Bearer key11MS9MKtKRPWWJ');
@@ -522,7 +523,6 @@ function deletaNota( notaFiscalKey){
                 <ul class="d-flex flex-column justify-content-center">
                     <li><a href="./consultaNotaData.html">Por data</a></li>
                     <li><a href="./consultaNotaEmpresa.html">Por valor</a></li>
-                    <li><a href="">Por produto</a> </li>
                     <li><a href="./consultaNotaEmpresa.html">Por empresa</a> </li>
                 </ul>
             </div>
@@ -541,8 +541,8 @@ function deletaNota( notaFiscalKey){
                                 aria-label="Search through site content" placeholder="Informe o nome da empresa">
                         </label>
                         <label style="margin-left: 10px;"> CNPJ
-                            <input class="mb-0" type="text" id="cnpjEmpresa" name="cnpjEmpresa"
-                                aria-label="Search through site content" placeholder="CNPJ">
+                            <input class="mb-0" type="number" id="cnpjEmpresa" name="cnpjEmpresa"
+                                aria-label="Search through site content" placeholder="CNPJ" maxlength="14">
                         </label>
                         <button class="ms-1" id='btnCadastrar'
                             onclick='cadastrarEmpresa();'><i
@@ -562,7 +562,6 @@ function deletaNota( notaFiscalKey){
                         <select name="filtros" id="filtros-select" class="pe-3 ps-3 pb-1 pt-1">
                             <option value="data">Por data</a></option>
                             <option value="valor">Por valor</option>
-                            <option value="produto">Por produto</option>
                             <option value="empresa">Por empresa</option>
                         </select>
                     </div>

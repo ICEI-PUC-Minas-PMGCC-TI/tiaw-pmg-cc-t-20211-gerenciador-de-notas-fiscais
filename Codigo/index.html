@@ -160,7 +160,7 @@
                 return false;
             }
             if (cpf == null || cpf.trim().length !== 11 || cpf.match(/[^0-9]/g)) {
-                alert('O CPF é inválido!');
+                alert('O CPF é inválido! Exemplo valido: 12312312312');
                 return false;
             }
             if (email == null || email.trim().length === 0 || !email.match(/^[a-z0-9.]+@[a-z0-9]+.[a-z]+.([a-z]+$)/gi)) {
@@ -218,6 +218,8 @@
                     document.getElementById('cadastroUsuarioCPF').value = '';
                     document.getElementById('cadastroUsuarioEmail').value = '';
                     document.getElementById('cadastroUsuarioSenha').value = '';
+                    document.getElementById('cadastroUsuarioConfirmeSenha').value='';
+                    document.getElementById('cadastroUsuarioConfirmeEmail').value='';
                     document.getElementById("btnCadastrarUsuario").disabled = false;
                 };
                 obj.send(dados);
@@ -431,10 +433,10 @@
                                 meth="POST">
                                 <div class="formulario-cadastro">
                                     <input type="text" id="cadastroUsuarioNome" name="nome" placeholder="Nome completo">
-                                    <input type="text" id="cadastroUsuarioCPF" name="cpf" placeholder="CPF"
+                                    <input type="number" id="cadastroUsuarioCPF" name="cpf" placeholder="CPF"
                                         maxlength="11">
-                                    <input type="text" id="cadastroUsuarioEmail" name="email" placeholder="E-mail">
-                                    <input type="text" id="cadastroUsuarioConfirmeEmail" name="confirmeEmail"
+                                    <input type="email" id="cadastroUsuarioEmail" name="email" placeholder="E-mail">
+                                    <input type="email" id="cadastroUsuarioConfirmeEmail" name="confirmeEmail"
                                         placeholder="Confirmar E-mail" autocomplete="none">
                                     <input type="password" id="cadastroUsuarioSenha" name="senha" placeholder="Senha">
                                     <input type="password" id="cadastroUsuarioConfirmeSenha" name="confirme_senha"
