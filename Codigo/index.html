@@ -160,7 +160,7 @@
                 return false;
             }
             if (cpf == null || cpf.trim().length !== 11 || cpf.match(/[^0-9]/g)) {
-                alert('O CPF é inválido! Exemplo valido: 12312312312');
+                alert('O CPF é inválido!');
                 return false;
             }
             if (email == null || email.trim().length === 0 || !email.match(/^[a-z0-9.]+@[a-z0-9]+.[a-z]+.([a-z]+$)/gi)) {
@@ -218,8 +218,6 @@
                     document.getElementById('cadastroUsuarioCPF').value = '';
                     document.getElementById('cadastroUsuarioEmail').value = '';
                     document.getElementById('cadastroUsuarioSenha').value = '';
-                    document.getElementById('cadastroUsuarioConfirmeSenha').value='';
-                    document.getElementById('cadastroUsuarioConfirmeEmail').value='';
                     document.getElementById("btnCadastrarUsuario").disabled = false;
                 };
                 obj.send(dados);
@@ -330,30 +328,23 @@
                                     class="active" aria-current="true" aria-label="Slide 1"></button>
                                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
                                     aria-label="Slide 2"></button>
-                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                                    aria-label="Slide 3"></button>
+                                <!-- <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                                    aria-label="Slide 3"></button> -->
                             </div>
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
                                     <div class="row">
                                         <div
                                             class="col-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center order-0 order-sm-0 order-md-1 order-lg-1">
-                                            <img src="https://source.unsplash.com/random/300x200" alt="foto 1">
+                                            <img src="./imagens/imagem 1.jpg" size="300x200" alt="foto 1">
                                         </div>
                                         <div
                                             class="col-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center order-1 order-sm-1 order-md-0 order-lg-0">
                                             <div>
                                                 <h1 class="mt-2">
-                                                    Título
+                                                    Cadastro Prévio de Empresa
                                                 </h1>
-                                                <p class="texto">Lorem ipsum dolor sit, amet consectetur
-                                                    adipisicing
-                                                    elit.
-                                                    Voluptatibus mollitia harum quas, unde ut eius rerum iure expedita
-                                                    praesentium perferendis illum adipisci natus libero labore, ipsum
-                                                    perspiciatis, beatae corrupti earum ab est eligendi totam iusto
-                                                    culpa. Quam, aspernatur assumenda est, tenetur ab velit, numquam
-                                                    quia dolor eligendi officiis adipisci autem?</p>
+                                                <p class="texto">Para o cadastro correto do documento fiscal, a plataforma Organizei exige que o próprio usuário informe o CNPJ e o nome da empresa emissora. Uma vez que um usuário cadastra uma empresa, sua seleção estará disponível para todos os demais usuários, de modo que isso torne a plataforma mais abrangente para todos os interessados no nosso serviço.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -362,30 +353,24 @@
                                     <div class="row">
                                         <div
                                             class="col-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center order-0">
-                                            <img src="https://source.unsplash.com/random/300x200" alt="foto 2">
+                                            <img src="./imagens/imagem2.jpg" size="300x200" alt="foto 2">
                                         </div>
                                         <div
                                             class="col-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center order-1">
                                             <div>
                                                 <h1 class="mt-2">
-                                                    Título
+                                                    Cadastro de Nota Fiscal
                                                 </h1>
-                                                <p class="texto">Lorem ipsum dolor sit, amet consectetur adipisicing
-                                                    elit. Laborum
-                                                    consectetur earum qui maxime aspernatur quibusdam, veniam, dolorum
-                                                    laboriosam dignissimos esse nesciunt tempore nihil facere unde
-                                                    soluta porro facilis odio debitis sed. Quaerat illum quam quis,
-                                                    porro beatae pariatur modi earum quasi a praesentium quo natus eaque
-                                                    laborum, totam veniam? Nemo.</p>
+                                                <p class="texto">O arquivamento de uma nota fiscal pela Organizei é feito por meio do link correspondente ao documento. Devem também ser informados a chave de acesso da nota, o valor da compra, a data de emissão do documento e a empresa emissora (previamente cadastrada). Estando ainda em fase de validação, a primeira versão da plataforma Organizei vê-se dependente do fornecimento desses dados.</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="carousel-item">
+                                <!-- <div class="carousel-item">
                                     <div class="row">
                                         <div
                                             class="col-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center order-0 order-sm-0 order-md-1 order-lg-1">
-                                            <img src="https://source.unsplash.com/random/300x200" alt="foto 2">
+                                            <img src="./imagens/imagem 1.jpg" size="300x200" alt="foto 2">
                                         </div>
                                         <div
                                             class="col-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center order-1 order-sm-1 ordem-md-0 order-lg-0">
@@ -404,7 +389,7 @@
 
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                             <button class="carousel-control-prev" type="button"
                                 data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -433,10 +418,10 @@
                                 meth="POST">
                                 <div class="formulario-cadastro">
                                     <input type="text" id="cadastroUsuarioNome" name="nome" placeholder="Nome completo">
-                                    <input type="number" id="cadastroUsuarioCPF" name="cpf" placeholder="CPF"
+                                    <input type="text" id="cadastroUsuarioCPF" name="cpf" placeholder="CPF"
                                         maxlength="11">
-                                    <input type="email" id="cadastroUsuarioEmail" name="email" placeholder="E-mail">
-                                    <input type="email" id="cadastroUsuarioConfirmeEmail" name="confirmeEmail"
+                                    <input type="text" id="cadastroUsuarioEmail" name="email" placeholder="E-mail">
+                                    <input type="text" id="cadastroUsuarioConfirmeEmail" name="confirmeEmail"
                                         placeholder="Confirmar E-mail" autocomplete="none">
                                     <input type="password" id="cadastroUsuarioSenha" name="senha" placeholder="Senha">
                                     <input type="password" id="cadastroUsuarioConfirmeSenha" name="confirme_senha"
@@ -465,15 +450,11 @@
                             O que é a Organizei
                         </h2>
                         <p class="texto">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quia facere voluptatibus
-                            maxime illo. Atque quo id, repellendus optio incidunt voluptatibus iusto nisi voluptate
-                            quibusdam sequi necessitatibus quam perspiciatis! Id quis quam impedit obcaecati vel? Nobis
-                            minima aspernatur eum tenetur maxime omnis blanditiis repellendus odit cupiditate itaque,
-                            eaque architecto repudiandae.
+                            A Organizei é uma plataforma em desenvolvimento que visa proporcionar um ambiente favorável à organização fiscal por meio do arquivamento de de notas fiscais. O serviço oferecido pela Organizei é baseado no armazenamento de links e informações correspondentes ao documento fiscal que, devido aos contratempos e dificuldades do dia a dia, as pessoas não conseguem organizar de forma efetiva.
                         </p>
                     </div>
                     <div class="col-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center order-1">
-                        <img src="https://source.unsplash.com/random/500x400" alt="">
+                        <img src="./imagens/imagem 4.png" alt="">
                     </div>
                 </div>
             </div>
@@ -487,16 +468,12 @@
                             Como funciona
                         </h2>
                         <p class="texto">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quia facere voluptatibus
-                            maxime illo. Atque quo id, repellendus optio incidunt voluptatibus iusto nisi voluptate
-                            quibusdam sequi necessitatibus quam perspiciatis! Id quis quam impedit obcaecati vel? Nobis
-                            minima aspernatur eum tenetur maxime omnis blanditiis repellendus odit cupiditate itaque,
-                            eaque architecto repudiandae.
+                            Ao optar pelo uso da plataforma Organizei, o usuário deve efetuar o seu cadastro por meio deste site, e, posteriormente, o seu login. Cada usuário terá acesso privado à sua página de arquivamentos, onde poderá salvar em nuvem a sua nota fiscal. Para o arquivamento da nota, a plataforma exige cadastro prévio de informações sobre a empresa emissora, e, então, o cadastro do documento poderá ser feito através de um link.
                         </p>
                     </div>
                     <div
                         class="col-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center order-1 order-sm-1 order-md-0 order-lg-0">
-                        <img src="https://source.unsplash.com/random/500x400" alt="">
+                        <img src="./imagens/imagem 5.jpg" alt="">
                     </div>
                 </div>
             </div>
@@ -509,15 +486,11 @@
                             Sobre nós
                         </h2>
                         <p class="texto">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quia facere voluptatibus
-                            maxime illo. Atque quo id, repellendus optio incidunt voluptatibus iusto nisi voluptate
-                            quibusdam sequi necessitatibus quam perspiciatis! Id quis quam impedit obcaecati vel? Nobis
-                            minima aspernatur eum tenetur maxime omnis blanditiis repellendus odit cupiditate itaque,
-                            eaque architecto repudiandae.
+                            A plataforma Organizei foi idealizada pelos alunos Jéssica Alves, João Pedro Torres e Robson Ricardo Costa durante as aulas da disciplina Trabalho Interdisciplinar: Aplicações Web oferecida aos alunos de Ciência da Computação pela PUC Minas. Durante todas as fases do desenvolvimento da ferramenta, os desenvolvedores contaram com ampla assistência dos professores João Carlos Caetano e Rommel Carneiro.
                         </p>
                     </div>
                     <div class="col-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center order-1">
-                        <img src="https://source.unsplash.com/random/500x400" alt="">
+                        <img src="./imagens/puc.jpg" alt="">
                     </div>
                 </div>
             </div>
