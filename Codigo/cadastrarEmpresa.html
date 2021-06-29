@@ -18,244 +18,244 @@
 
 
     <script>
-       var ConjuntoNotas=new Array();
+        var ConjuntoNotas = new Array();
 
-function criarNotaFiscal(dataEmissao, empresa, valor){
-    this.dataEmissao=dataEmissao;
-    this.empresa=empresa;
-    this.valor=valor;
-    return this;
-}
+        function criarNotaFiscal(dataEmissao, empresa, valor) {
+            this.dataEmissao = dataEmissao;
+            this.empresa = empresa;
+            this.valor = valor;
+            return this;
+        }
 
-function mostraNota(cj){
-  //  cj.sort(function compare(a,b){ alert(a.empresa<b.empresa); return JSON.stringify(a.empresa).toLowerCase() < JSON.stringify(b.emprea).toLowerCase() ? 1 : -1; });
+        function mostraNota(cj) {
+            //  cj.sort(function compare(a,b){ alert(a.empresa<b.empresa); return JSON.stringify(a.empresa).toLowerCase() < JSON.stringify(b.emprea).toLowerCase() ? 1 : -1; });
 
-    var htmls = '';
-    var emp='';
-    linkTableValor = "<a href='#' onclick='getNotaFiscal(\"valor\", \"asc\")' title='Ordenar notas fiscais por valor em ordem crescente.'>Valor <i class='fas fa-sort'></i></a>";
-    linkTableData = "<a href='#' onclick='getNotaFiscal(\"dataEmissao\", \"asc\")' title='Ordenar notas fiscais por data em ordem crescente.' >Data emissão <i class='fas fa-sort'></i></a>";
-    var local = document.getElementById("listaNotas");
-    local.innerHTML="aguarde...";
-    var htmls = "<div class='nota d-flex justify-content-between align-items-center p-2 m-2'><table><tr><th>" + linkTableData + "</th><th>" + linkTableValor + "</th><th><a href='#' > Empresa</a></th><th style='text-align:center;' colspan='2' >Downloads</th></tr>";
-    for (i = 0; i < cj.length; i++) {
-        htmls += "<tr><td>" + cj[i].dataEmissao + "</td>";
-        htmls += "<td>" + cj[i].valor + "</td>";
-        htmls+="<td>"+cj[i].empresa+"</td>";
-        htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='" + cj[i].url + "' title='Baixar nota fiscal.' target='_blank'><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-file-download ms-1'></i></a></div></td>";
-        htmls+="<td><div class='me-2 d-flex justify-content-center'><a href='#' title='Deletar nota fiscal.'  onclick='deletarNota(\""+cj[i].id+"\"); '><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-trash ms-1'></i></a></div></td></tr>";
-    }
+            var htmls = '';
+            var emp = '';
+            linkTableValor = "<a href='#' onclick='getNotaFiscal(\"valor\", \"asc\")' title='Ordenar notas fiscais por valor em ordem crescente.'>Valor <i class='fas fa-sort'></i></a>";
+            linkTableData = "<a href='#' onclick='getNotaFiscal(\"dataEmissao\", \"asc\")' title='Ordenar notas fiscais por data em ordem crescente.' >Data emissão <i class='fas fa-sort'></i></a>";
+            var local = document.getElementById("listaNotas");
+            local.innerHTML = "aguarde...";
+            var htmls = "<div class='nota d-flex justify-content-between align-items-center p-2 m-2'><table><tr><th>" + linkTableData + "</th><th>" + linkTableValor + "</th><th><a href='#' > Empresa</a></th><th style='text-align:center;' colspan='2' >Downloads</th></tr>";
+            for (i = 0; i < cj.length; i++) {
+                htmls += "<tr><td>" + cj[i].dataEmissao + "</td>";
+                htmls += "<td>" + cj[i].valor + "</td>";
+                htmls += "<td>" + cj[i].empresa + "</td>";
+                htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='" + cj[i].url + "' title='Baixar nota fiscal.' target='_blank'><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-file-download ms-1'></i></a></div></td>";
+                htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='#' title='Deletar nota fiscal.'  onclick='deletarNota(\"" + cj[i].id + "\"); '><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-trash ms-1'></i></a></div></td></tr>";
+            }
             htmls += '</table></div>';
             local.innerHTML = htmls;
-}
-function validarAcesso() {
-    localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autoriza��o para consumo de webserver airtable.
-
-    if (localStorage.getItem('userKey') === '' || localStorage.getItem('userKey') === null) {
-        window.location.href = "index.html";
-    } else {
-        getEmpresas('','nome');
-
-    }
-
-}
-
-function getEmpresa(empresaKey) {
-    var obj = new XMLHttpRequest();
-    var nome=null;
-    obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa/" + empresaKey, false);
-
-    obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
-    obj.onreadystatechange = function () {
-        var htmls = '';
-        if (obj.readyState === 4 && obj.status === 200) {
-            //converte a resposta em json object
-            var jsonObj = JSON.parse(this.responseText);
-            nome= jsonObj.fields.nome;
         }
-    };
-    obj.send();
-    return nome;
-}
+        function validarAcesso() {
+            localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autoriza��o para consumo de webserver airtable.
 
-function getEmpresaByCNPJ(cnpj, funcao) {
-			var retorno = null;
-			var obj = new XMLHttpRequest();
-            obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?filterByFormula=AND(idUsuario%3D'"+ localStorage.getItem('userId')+"'%2CCNPJ%3D'"+cnpj+"')", true);
-			obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
-            
-			obj.onreadystatechange = function () {
-				if (obj.readyState === 4 && obj.status === 200) {
-					//converte a resposta em json object
-					var jsonObj = JSON.parse(this.responseText);
-                    
-					var usuario = jsonObj.records;
-					var htmls;
-					if (usuario.length <= 0) {   //salva informa��es na localstoge
-						funcao();
-						retorno = jsonObj;
-					} else {
-						alert('O cnpj ' + cnpj + ' ja esta cadastrado!');
-						return;
-					}
-				}
-			};
-			obj.send();
+            if (localStorage.getItem('userKey') === '' || localStorage.getItem('userKey') === null) {
+                window.location.href = "index.html";
+            } else {
+                getEmpresas('', 'nome');
 
-			return retorno;
-		}
+            }
 
-function cadastrarEmpresa(){
-    //pega dados
-    empresa=document.getElementById('nomeEmpresa').value.trim();
-    cnpj=document.getElementById('cnpjEmpresa').value.trim();
-    //valida informaçoes
-    if(empresa.length===0){
-        alert('O nome da empresa deve ser informado!');
-        return false;
-    }
-
-    if(cnpj.length===0){
-        alert('O cnpj deve ser informado!');
-        return false;
-    }
-
-    if(cnpj.length!==14){
-        alert('O cnpj e invalido!');
-        return false;
-    }
-
-    //pesquisa cnpj para evitar cadastro repetido
-    var pesquisacnpj=getEmpresaByCNPJ(cnpj, function (){
-        empresa=document.getElementById('nomeEmpresa').value.trim();
-        cnpj=document.getElementById('cnpjEmpresa').value.trim();
-        //cria requisicao
-        document.getElementById("btnCadastrar").disabled = true;
-    //cria estrutura de dados
-    var empresaJson={
-        fields:{
-            nome: empresa,
-            CNPJ: cnpj,      
-            Usuario: [localStorage.getItem('userKey')],
         }
-    }
-        var obj = new XMLHttpRequest();
-        obj.open("POST", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa/", true);
 
-        obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
-        obj.setRequestHeader("Content-Type", "application/json");
-        var dados = JSON.stringify(empresaJson);
-        obj.onreadystatechange = function () {
-					if (obj.readyState === 4 && obj.status === 200) {
-						alert('Empresa cadastrada com sucesso!');
-                        getEmpresas("", "nome");
-					}
-					//limpando o formulario.
-					document.getElementById('nomeEmpresa').value = '';
-					document.getElementById('cnpjEmpresa').value = '';
-					document.getElementById("btnCadastrar").disabled = false;
-					//getUsuarios();
-				};
-				obj.send(dados);
+        function getEmpresa(empresaKey) {
+            var obj = new XMLHttpRequest();
+            var nome = null;
+            obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa/" + empresaKey, false);
 
-
-    });
-    return true;
-
-
-}
-
-function getEmpresaByKey(empresaKey) {
-			var obj = new XMLHttpRequest();
-            var nome=null;
-			obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa/" + empresaKey, false);
-
-			obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
-			obj.onreadystatechange = function () {
-				var htmls = '';
-				if (obj.readyState === 4 && obj.status === 200) {
-					//converte a resposta em json object
-					var jsonObj = JSON.parse(this.responseText);
-                    if( typeof jsonObj.fields!="undefined" )
-					    nome= jsonObj.fields;
-				}
-			};
-			obj.send();
+            obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+            obj.onreadystatechange = function () {
+                var htmls = '';
+                if (obj.readyState === 4 && obj.status === 200) {
+                    //converte a resposta em json object
+                    var jsonObj = JSON.parse(this.responseText);
+                    nome = jsonObj.fields.nome;
+                }
+            };
+            obj.send();
             return nome;
-		}
-
-function deletaEmpresa( empresaKey){
-    var resposta=confirm("Ao excluir esta empresa todos os documentos fiscais emitidos por ela, tambem serao excluidos.Deseja realamente excluir esta empresa ?");
-    if(!resposta){
-        return false;
-    }
-    var local = document.getElementById("listaNotas");
-    local.innerHTML = "Consultando dependencias.";
-    var notas=getEmpresaByKey(empresaKey);
-    
-    if( typeof notas.NotaFiscal!="undefined"){
-        for(i=0; i<notas.NotaFiscal.length; i++){
-            local.innerHTML = "excluindo nota fiscal "+(i+1)+" de "+(notas.NotaFiscal.length+1)+".";
-            deletaNota(notas.NotaFiscal[i]);
         }
-        
-    }
-    local.innerHTML = "excluindo a empresa.";
-    var obj = new XMLHttpRequest();
-    obj.open("DELETE", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa/" + empresaKey, true);
 
-    obj.setRequestHeader('Authorization', 'Bearer key11MS9MKtKRPWWJ');
-    obj.onreadystatechange = function () {
-        if (obj.readyState === 4 && obj.status === 200) {
-            // Print received data from server
-            //result.innerHTML = this.responseText;
-            var jsonObj = JSON.parse(this.responseText);
-            //excluindo todas as notas fiscais emitidas por essa empresa.
-            //alert(obj.responseText);
-            getEmpresas('','nome');
-            
+        function getEmpresaByCNPJ(cnpj, funcao) {
+            var retorno = null;
+            var obj = new XMLHttpRequest();
+            obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?filterByFormula=AND(idUsuario%3D'" + localStorage.getItem('userId') + "'%2CCNPJ%3D'" + cnpj + "')", true);
+            obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+
+            obj.onreadystatechange = function () {
+                if (obj.readyState === 4 && obj.status === 200) {
+                    //converte a resposta em json object
+                    var jsonObj = JSON.parse(this.responseText);
+
+                    var usuario = jsonObj.records;
+                    var htmls;
+                    if (usuario.length <= 0) {   //salva informa��es na localstoge
+                        funcao();
+                        retorno = jsonObj;
+                    } else {
+                        alert('O cnpj ' + cnpj + ' ja esta cadastrado!');
+                        return;
+                    }
+                }
+            };
+            obj.send();
+
+            return retorno;
         }
-    };
 
-    obj.send();
+        function cadastrarEmpresa() {
+            //pega dados
+            empresa = document.getElementById('nomeEmpresa').value.trim();
+            cnpj = document.getElementById('cnpjEmpresa').value.trim();
+            //valida informaçoes
+            if (empresa.length === 0) {
+                alert('O nome da empresa deve ser informado!');
+                return false;
+            }
+
+            if (cnpj.length === 0) {
+                alert('O cnpj deve ser informado!');
+                return false;
+            }
+
+            if (cnpj.length !== 14) {
+                alert('O cnpj e invalido!');
+                return false;
+            }
+
+            //pesquisa cnpj para evitar cadastro repetido
+            var pesquisacnpj = getEmpresaByCNPJ(cnpj, function () {
+                empresa = document.getElementById('nomeEmpresa').value.trim();
+                cnpj = document.getElementById('cnpjEmpresa').value.trim();
+                //cria requisicao
+                document.getElementById("btnCadastrar").disabled = true;
+                //cria estrutura de dados
+                var empresaJson = {
+                    fields: {
+                        nome: empresa,
+                        CNPJ: cnpj,
+                        Usuario: [localStorage.getItem('userKey')],
+                    }
+                }
+                var obj = new XMLHttpRequest();
+                obj.open("POST", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa/", true);
+
+                obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+                obj.setRequestHeader("Content-Type", "application/json");
+                var dados = JSON.stringify(empresaJson);
+                obj.onreadystatechange = function () {
+                    if (obj.readyState === 4 && obj.status === 200) {
+                        alert('Empresa cadastrada com sucesso!');
+                        getEmpresas("", "nome");
+                    }
+                    //limpando o formulario.
+                    document.getElementById('nomeEmpresa').value = '';
+                    document.getElementById('cnpjEmpresa').value = '';
+                    document.getElementById("btnCadastrar").disabled = false;
+                    //getUsuarios();
+                };
+                obj.send(dados);
 
 
-}
+            });
+            return true;
 
-function editarEmpresa(empresaKey){
 
-    localStorage.setItem('empresaKey', empresaKey);
-    window.location.href="editarEmpresa.html";
-}
-
-function deletaNota( notaFiscalKey){
-    //var resposta=confirm("Deseja realamente excluir este documento fiscal?");
-   // if(!resposta){
-     //   return false;
-   // }
-    //var local = document.getElementById("listaNotas");
-    //local.innerHTML = "Aguardando resposta";
-    var obj = new XMLHttpRequest();
-    obj.open("DELETE", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal/" + notaFiscalKey, false);
-
-    obj.setRequestHeader('Authorization', 'Bearer key11MS9MKtKRPWWJ');
-    obj.onreadystatechange = function () {
-        if (obj.readyState === 4 && obj.status === 200) {
-            // Print received data from server
-            //result.innerHTML = this.responseText;
-            var jsonObj = JSON.parse(this.responseText);
-            //alert(obj.responseText);
-            //getNotaFiscal(null);
-            
         }
-    };
 
-    obj.send();
+        function getEmpresaByKey(empresaKey) {
+            var obj = new XMLHttpRequest();
+            var nome = null;
+            obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa/" + empresaKey, false);
+
+            obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+            obj.onreadystatechange = function () {
+                var htmls = '';
+                if (obj.readyState === 4 && obj.status === 200) {
+                    //converte a resposta em json object
+                    var jsonObj = JSON.parse(this.responseText);
+                    if (typeof jsonObj.fields != "undefined")
+                        nome = jsonObj.fields;
+                }
+            };
+            obj.send();
+            return nome;
+        }
+
+        function deletaEmpresa(empresaKey) {
+            var resposta = confirm("Ao excluir esta empresa todos os documentos fiscais emitidos por ela, tambem serao excluidos.Deseja realamente excluir esta empresa ?");
+            if (!resposta) {
+                return false;
+            }
+            var local = document.getElementById("listaNotas");
+            local.innerHTML = "Consultando dependencias.";
+            var notas = getEmpresaByKey(empresaKey);
+
+            if (typeof notas.NotaFiscal != "undefined") {
+                for (i = 0; i < notas.NotaFiscal.length; i++) {
+                    local.innerHTML = "excluindo nota fiscal " + (i + 1) + " de " + (notas.NotaFiscal.length + 1) + ".";
+                    deletaNota(notas.NotaFiscal[i]);
+                }
+
+            }
+            local.innerHTML = "excluindo a empresa.";
+            var obj = new XMLHttpRequest();
+            obj.open("DELETE", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa/" + empresaKey, true);
+
+            obj.setRequestHeader('Authorization', 'Bearer key11MS9MKtKRPWWJ');
+            obj.onreadystatechange = function () {
+                if (obj.readyState === 4 && obj.status === 200) {
+                    // Print received data from server
+                    //result.innerHTML = this.responseText;
+                    var jsonObj = JSON.parse(this.responseText);
+                    //excluindo todas as notas fiscais emitidas por essa empresa.
+                    //alert(obj.responseText);
+                    getEmpresas('', 'nome');
+
+                }
+            };
+
+            obj.send();
 
 
-}
+        }
+
+        function editarEmpresa(empresaKey) {
+
+            localStorage.setItem('empresaKey', empresaKey);
+            window.location.href = "editarEmpresa.html";
+        }
+
+        function deletaNota(notaFiscalKey) {
+            //var resposta=confirm("Deseja realamente excluir este documento fiscal?");
+            // if(!resposta){
+            //   return false;
+            // }
+            //var local = document.getElementById("listaNotas");
+            //local.innerHTML = "Aguardando resposta";
+            var obj = new XMLHttpRequest();
+            obj.open("DELETE", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal/" + notaFiscalKey, false);
+
+            obj.setRequestHeader('Authorization', 'Bearer key11MS9MKtKRPWWJ');
+            obj.onreadystatechange = function () {
+                if (obj.readyState === 4 && obj.status === 200) {
+                    // Print received data from server
+                    //result.innerHTML = this.responseText;
+                    var jsonObj = JSON.parse(this.responseText);
+                    //alert(obj.responseText);
+                    //getNotaFiscal(null);
+
+                }
+            };
+
+            obj.send();
 
 
-      
+        }
+
+
+
         function getNotaFiscal(order = null, direcao = null) {
             var listaClientes = null;
             var local = document.getElementById("listaNotas");
@@ -301,18 +301,18 @@ function deletaNota( notaFiscalKey){
                     listaClientes = jsonObj.records;
 
                     var htmls = '';
-                    var emp='';
+                    var emp = '';
                     ConjuntoNotas.splice(0, ConjuntoNotas.length);
                     var htmls = "<div class='nota d-flex justify-content-between align-items-center p-2 m-2'><table><tr><th>" + linkTableData + "</th><th>" + linkTableValor + "</th><th><a href='#'  > Empresa</a></th><th style='text-align:center;' colspan='2' >Downloads</th></tr>";
                     for (i = 0; i < listaClientes.length; i++) {
-                        emp=getEmpresa(listaClientes[i].fields.Empresa[0]);
-                        ConjuntoNotas.push({id: listaClientes[i], dataEmissao: listaClientes[i].fields.dataEmissao, empresa: emp, valor: listaClientes[i].fields.valor, url: listaClientes[i].fields.documentoFiscal});
+                        emp = getEmpresa(listaClientes[i].fields.Empresa[0]);
+                        ConjuntoNotas.push({ id: listaClientes[i], dataEmissao: listaClientes[i].fields.dataEmissao, empresa: emp, valor: listaClientes[i].fields.valor, url: listaClientes[i].fields.documentoFiscal });
 
                         htmls += "<tr><td>" + listaClientes[i].fields.dataEmissao + "</td>";
                         htmls += "<td>" + listaClientes[i].fields.valor + "</td>";
-                        htmls+="<td>"+emp+"</td>";
+                        htmls += "<td>" + emp + "</td>";
                         htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='" + listaClientes[i].fields.documentoFiscal + "' title='Baixar nota fiscal.' target='_blank'><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-file-download ms-1'></i></a></div></td>";
-                        htmls+="<td><div class='me-2 d-flex justify-content-center'><a href='#' title='Deletar nota fiscal.'  onclick='deletaNota(\""+listaClientes[i].id+"\"); '><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-trash ms-1'></i></a></div></td></tr>";
+                        htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='#' title='Deletar nota fiscal.'  onclick='deletaNota(\"" + listaClientes[i].id + "\"); '><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-trash ms-1'></i></a></div></td></tr>";
                     }
                     htmls += '</table>';
                     local.innerHTML = htmls;
@@ -336,14 +336,14 @@ function deletaNota( notaFiscalKey){
             var local = document.getElementById("listaNotas");
             local.innerHTML = "Aguardando resposta";
             var obj = new XMLHttpRequest();
-/*
-            if (order === 'dataEmissao') {
-                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=dataEmissao&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=AND(valor%3E%3D" + valorInicial + "%2C+valor%3C%3D" + valorFinal + ")", true);
-            } else if (order === 'valor') {
-                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=valor&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=AND(valor%3E%3D" + valorInicial + "%2C+valor%3C%3D" + valorFinal + ")", true);
-            } else {
-                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&filterByFormula=AND(valor%3E%3D" + valorInicial + "%2C+valor%3C%3D" + valorFinal + ")", true);
-            }*/
+            /*
+                        if (order === 'dataEmissao') {
+                            obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=dataEmissao&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=AND(valor%3E%3D" + valorInicial + "%2C+valor%3C%3D" + valorFinal + ")", true);
+                        } else if (order === 'valor') {
+                            obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=valor&sort%5B0%5D%5Bdirection%5D=asc&filterByFormula=AND(valor%3E%3D" + valorInicial + "%2C+valor%3C%3D" + valorFinal + ")", true);
+                        } else {
+                            obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&filterByFormula=AND(valor%3E%3D" + valorInicial + "%2C+valor%3C%3D" + valorFinal + ")", true);
+                        }*/
 
             if (order === 'dataEmissao') {
                 if (direcao == 'desc') {
@@ -355,7 +355,7 @@ function deletaNota( notaFiscalKey){
                     linkTableData = "<a href='#' onclick='getNotaFiscalByData(document.getElementById(\"dataInicial\").value,document.getElementById(\"dataFinal\").value,\"dataEmissao\", \"desc\")' title='Ordenar notas fiscais por data em ordem decrescente.'>Data emissão <i class='fas fa-sort-down'></i></a>";
                     linkTableValor = "<a href='#' onclick='getNotaFiscalByData(document.getElementById(\"dataInicial\").value,document.getElementById(\"dataFinal\").value,\"valor\", \"asc\")' title='Ordenar notas fiscais por valor em ordem crescente.'>Valor <i class='fas fa-sort'></i></a>";
                 }
-                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=Empresa&fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=dataEmissao&sort%5B0%5D%5Bdirection%5D=" + dir + "&filterByFormula=AND(idUsuario%3D'" + localStorage.getItem('userId')+"'%2CIS_BEFORE('" + dataInicial + "'%2C+dataEmissao)%2C+IS_BEFORE(dataEmissao%2C+'" + dataFinal + "')+)", true);
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=Empresa&fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=dataEmissao&sort%5B0%5D%5Bdirection%5D=" + dir + "&filterByFormula=AND(idUsuario%3D'" + localStorage.getItem('userId') + "'%2CIS_BEFORE('" + dataInicial + "'%2C+dataEmissao)%2C+IS_BEFORE(dataEmissao%2C+'" + dataFinal + "')+)", true);
             } else if (order === 'valor') {
                 if (direcao == 'desc') {
                     dir = 'desc';
@@ -366,7 +366,7 @@ function deletaNota( notaFiscalKey){
                     linkTableValor = "<a href='#' onclick='getNotaFiscalByData(document.getElementById(\"dataInicial\").value,document.getElementById(\"dataFinal\").value,\"valor\", \"desc\")' title='Ordenar notas fiscais por valor em ordem decrescente.'>Valor <i class='fas fa-sort-down'></i></a>";
                     linkTableData = "<a href='#' onclick='getNotaFiscalByData(document.getElementById(\"dataInicial\").value,document.getElementById(\"dataFinal\").value,\"dataEmissao\", \"asc\")' title='Ordenar notas fiscais por data em ordem crescente.'>Data emissão <i class='fas fa-sort'></i></a>";
                 }
-                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=Empresa&fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=valor&sort%5B0%5D%5Bdirection%5D=" + dir + "&filterByFormula=AND(idUsuario%3D'" + localStorage.getItem('userId')+"'%2CIS_BEFORE('" + dataInicial + "'%2C+dataEmissao)%2C+IS_BEFORE(dataEmissao%2C+'" + dataFinal + "')+)", true);
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal?fields%5B%5D=Empresa&fields%5B%5D=dataEmissao&fields%5B%5D=valor&fields%5B%5D=documentoFiscal&sort%5B0%5D%5Bfield%5D=valor&sort%5B0%5D%5Bdirection%5D=" + dir + "&filterByFormula=AND(idUsuario%3D'" + localStorage.getItem('userId') + "'%2CIS_BEFORE('" + dataInicial + "'%2C+dataEmissao)%2C+IS_BEFORE(dataEmissao%2C+'" + dataFinal + "')+)", true);
             } else {
                 linkTableValor = "<a href='#' onclick='getNotaFiscalByData(document.getElementById(\"dataInicial\").value,document.getElementById(\"dataFinal\").value,\"valor\", \"asc\")' title='Ordenar notas fiscais por valor em ordem crescente.'>Valor <i class='fas fa-sort'></i></a>";
                 linkTableData = "<a href='#' onclick='getNotaFiscalByData(document.getElementById(\"dataInicial\").value,document.getElementById(\"dataFinal\").value,\"dataEmissao\", \"asc\")' title='Ordenar notas fiscais por data em ordem crescente.' >Data emissão <i class='fas fa-sort'></i></a>";
@@ -381,19 +381,19 @@ function deletaNota( notaFiscalKey){
                     var jsonObj = JSON.parse(this.responseText);
                     listaClientes = jsonObj.records;
 
-                                        var htmls = '';
-                    var emp='';
+                    var htmls = '';
+                    var emp = '';
                     ConjuntoNotas.splice(0, ConjuntoNotas.length);
                     var htmls = "<div class='nota d-flex justify-content-between align-items-center p-2 m-2'><table><tr><th>" + linkTableData + "</th><th>" + linkTableValor + "</th><th><a href='#'  > Empresa</a></th><th style='text-align:center;' colspan='2' >Downloads</th></tr>";
                     for (i = 0; i < listaClientes.length; i++) {
-                        emp=getEmpresa(listaClientes[i].fields.Empresa[0]);
-                        ConjuntoNotas.push({id: listaClientes[i], dataEmissao: listaClientes[i].fields.dataEmissao, empresa: emp, valor: listaClientes[i].fields.valor, url: listaClientes[i].fields.documentoFiscal});
+                        emp = getEmpresa(listaClientes[i].fields.Empresa[0]);
+                        ConjuntoNotas.push({ id: listaClientes[i], dataEmissao: listaClientes[i].fields.dataEmissao, empresa: emp, valor: listaClientes[i].fields.valor, url: listaClientes[i].fields.documentoFiscal });
 
                         htmls += "<tr><td>" + listaClientes[i].fields.dataEmissao + "</td>";
                         htmls += "<td>" + listaClientes[i].fields.valor + "</td>";
-                        htmls+="<td>"+emp+"</td>";
+                        htmls += "<td>" + emp + "</td>";
                         htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='" + listaClientes[i].fields.documentoFiscal + "' title='Baixar nota fiscal.' target='_blank'><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-file-download ms-1'></i></a></div></td>";
-                        htmls+="<td><div class='me-2 d-flex justify-content-center'><a href='#' title='Deletar nota fiscal.'  onclick='deletaNota(\""+listaClientes[i].id+"\"); '><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-trash ms-1'></i></a></div></td></tr>";
+                        htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='#' title='Deletar nota fiscal.'  onclick='deletaNota(\"" + listaClientes[i].id + "\"); '><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-trash ms-1'></i></a></div></td></tr>";
                     }
                     htmls += '</table>';
                     local.innerHTML = htmls;
@@ -449,13 +449,13 @@ function deletaNota( notaFiscalKey){
                     var htmls = "<table><tr><th><a href='#' onclick='getEmpresaByNome(\"bh\",\"nome\")' >Nome</a></th><th><a href='#' onclick='getEmpresaByNome(\"vi\",\"cnpj\")' >CNPJ</a></th><th>Número de Notas Fiscais</th><th colspan='2'>#</th></tr>";
                     for (i = 0; i < listaClientes.length; i++) {
 
-                        if(typeof listaClientes[i].fields.NotaFiscal=="undefined"){
-                            htmls += "<tr><td>" + listaClientes[i].fields.nome + "</td><td>" + listaClientes[i].fields.CNPJ + "</td><td><a href='#'> " +" 0 Nota Fiscal</a></td>";
-                        }else
-                        htmls += "<tr><td>" + listaClientes[i].fields.nome + "</td><td>" + listaClientes[i].fields.CNPJ + "</td><td><a href='#'> " + listaClientes[i].fields.NotaFiscal.length + " Notas Fiscais</a></td>";
+                        if (typeof listaClientes[i].fields.NotaFiscal == "undefined") {
+                            htmls += "<tr><td>" + listaClientes[i].fields.nome + "</td><td>" + listaClientes[i].fields.CNPJ + "</td><td><a href='#'> " + " 0 Nota Fiscal</a></td>";
+                        } else
+                            htmls += "<tr><td>" + listaClientes[i].fields.nome + "</td><td>" + listaClientes[i].fields.CNPJ + "</td><td><a href='#'> " + listaClientes[i].fields.NotaFiscal.length + " Notas Fiscais</a></td>";
 
-                            htmls+="<td><div class='me-2 d-flex justify-content-center'><a href='#' title='Editar empresa.'  onclick='editarEmpresa(\""+listaClientes[i].id+"\"); '>editar</a></div></td>";
-                        htmls+="<td><div class='me-2 d-flex justify-content-center'><a href='#' title='Excluir empresa.'  onclick='deletaEmpresa(\""+listaClientes[i].id+"\"); '><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-trash ms-1'></i></a></div></td></tr>";
+                        htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='#' title='Editar empresa.'  onclick='editarEmpresa(\"" + listaClientes[i].id + "\"); '>editar</a></div></td>";
+                        htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='#' title='Excluir empresa.'  onclick='deletaEmpresa(\"" + listaClientes[i].id + "\"); '><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-trash ms-1'></i></a></div></td></tr>";
                     }
                     htmls += '</table>';
                     local.innerHTML = htmls;
@@ -466,7 +466,7 @@ function deletaNota( notaFiscalKey){
             obj.send();
             // return listaClientes;
         }
-       
+
 
     </script>
 </head>
@@ -544,9 +544,9 @@ function deletaNota( notaFiscalKey){
                             <input class="mb-0" type="number" id="cnpjEmpresa" name="cnpjEmpresa"
                                 aria-label="Search through site content" placeholder="CNPJ" maxlength="14">
                         </label>
-                        <button class="ms-1" id='btnCadastrar'
-                            onclick='cadastrarEmpresa();'><i
-                                class="fas fa-search"></i></button>
+                        <button class="ms-1" id='btnCadastrar' onclick='cadastrarEmpresa();'><i
+                                class="fas fa-check-circle"></i></button>
+
                     </div>
                 </div>
             </div>
