@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Adicionar Notas</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous" />
+	<link rel="stylesheet" href="./style.css" />
+	<script src="https://kit.fontawesome.com/1aa7e9c006.js" crossorigin="anonymous"></script>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" />
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+		rel="stylesheet" />
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<script>
+		function validarAcesso() {
+			localStorage.setItem('key', 'key11MS9MKtKRPWWJ'); //chave de autoriza��o para consumo de webserver airtable.
+
+			if ((localStorage.getItem('userKey') === '' || localStorage.getItem('userKey') === null)) {
+				// window.location.href = "login.html";
+			}
+
+		}
+
+        function getEmpresas(nome, order = null) {
+            var listaClientes = null;
+            var local = document.getElementById("listaNotas");
+            // local.innerHTML = "Aguardando resposta";
+            var obj = new XMLHttpRequest();
+
+            if (order === 'nome') {
+                obj.open("GET",
+                    "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=AND(idUsuario%3D'" + localStorage.getItem('userId') + "'%2CFIND('" + nome + "'%2Cnome))&sort%5B0%5D%5Bfield%5D=nome&sort%5B0%5D%5Bdirection%5D=asc", true);
+            } else if (order === 'cnpj') {
+                obj.open("GET",
+                    "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=AND(idUsuario%3D'" + localStorage.getItem('userId') + "'%2C=FIND('" + nome + "'%2Cnome))&sort%5B0%5D%5Bfield%5D=CNPJ&sort%5B0%5D%5Bdirection%5D=asc", true);
+
+            } else {
+                obj.open("GET", "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=AND(idUsuario%3D'" + localStorage.getItem('userId') + "'%2C=FIND('" + nome + "'%2Cnome))", true);
+            }
+
+            obj.setRequestHeader('Authorization', 'Bearer key11MS9MKtKRPWWJ');
+            obj.onreadystatechange = function () {
+                if (obj.readyState === 4 && obj.status === 200) {
+                    // Print received data from server
+                    //result.innerHTML = this.responseText;
+
+                    var jsonObj = JSON.parse(this.responseText);
+                    listaClientes = jsonObj.records;
+                    var htmls = document.getElementById('selecao');
+                    for (i = 0; i < listaClientes.length; i++) {
+                        htmls.add(new Option(listaClientes[i].fields.nome, listaClientes [i].id));//htmls.add(new Option(listaClientes[i].fields.nome));
+                    }
+                }};
+            obj.send();
+            // return listaClientes;
+        }
+
+		function cadastrarNota() {
+		// 	//pegando os dados do formulario de cadastro da nota
+			var documentoFiscal = document.getElementById('documentoFiscal').value.trim();
+			var chave = document.getElementById('chave').value.trim();
+			var valor = document.getElementById('valor').value.trim();
+			var dataEmissao = document.getElementById('dataEmissao').value;
+			var select = document.getElementById('selecao');
+
+			// //validando os dados do cadastro
+			if (documentoFiscal == null || documentoFiscal.trim().length === 0) {
+				alert('O link é inválido!');
+				return false;
+			}
+			if (chave == null || chave.trim().length !== 44 || chave.match(/[^0-9]/gi)) {
+				alert('A chave é inválida!');
+				return false;
+			}
+			if (valor == null || valor.trim().length === 0  || valor.match(/[^0-9].,/gi)) {
+				alert('Valor inválido!');
+				return false;
+			}
+			if (dataEmissao == null || dataEmissao.length === 0) {
+				alert('A data é inválida!');
+				return false;
+			}
+            if (select ===0 || select.length === 0) {
+				alert('A empresa é inválida!');
+				return false;
+			}
+
+            var empresa=select.options[select.selectedIndex].value;
+			var notaFiscal = {
+			"fields": {
+				"chave": ''+chave+'',
+				"valor": parseFloat(valor),
+				"documentoFiscal": ''+documentoFiscal+'',
+				"dataEmissao": ''+dataEmissao+'',
+				"Empresa": [
+					empresa
+				],
+				"Usuario": [
+					localStorage.getItem('userKey')
+				],
+			}}
+
+			document.getElementById("btnCadastrar").disabled = true;
+
+			var obj = new XMLHttpRequest();
+			obj.open("POST", "https://api.airtable.com/v0/appywNsqVd3gL7McU/NotaFiscal/", true);
+
+			obj.setRequestHeader('Authorization', 'Bearer ' + localStorage.getItem('key'));
+			obj.setRequestHeader("Content-Type", "application/json");
+
+			var dados = JSON.stringify(notaFiscal);
+
+			obj.onreadystatechange = function () {
+				if (obj.readyState === 4 && obj.status === 200) {
+					alert('Cadastro efetuado com sucesso!');
+				}
+				//limpando o formulario.
+				document.getElementById('documentoFiscal').value = '';
+				document.getElementById('chave').value = '';
+				document.getElementById('valor').value = '';
+				document.getElementById('dataEmissao').value = '';
+				// document.getElementById('Empresa').value = '';
+				document.getElementById("btnCadastrar").disabled = false;
+				//getUsuarios();
+			};
+			obj.send(dados);
+		}
+	</script>
+</head>
+
+<body onload="validarAcesso();getEmpresas('', 'nome');">
+	<header>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<div class="container-fluid d-flex align-content-between">
+				<a href="./app.html"><i class="fas fa-arrow-circle-left"></i></a>
+				<div class="logo-pages">
+					<a class="navbar-brand ms-0" href="index.html"><img src="imagens/organizei.png" alt=""></a>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	<main id="cadastro" class="d-flex justify-content-center align-items-center">
+		<div class="container d-flex justify-content-center">
+			<div class="card-cadastro">
+				<div>
+					<p>Adicionar Nota</p>
+				</div>
+				<div>
+					<form action="#" method='post' autocomplete='off'>
+						<div class="d-flex justify-content-center">
+							<div class="d-flex justify-content-center flex-column">
+								<input type="url" id="documentoFiscal" name="documentoFiscal" placeholder="Link do documento" />
+								<input type="text" id="chave" name="chave" placeholder="Chave de acesso" />
+								<input type="number" id="valor" name="valor" placeholder="Valor" />
+								<input type="date" id="dataEmissao" name="dataEmissao" placeholder="Data de emissão" />
+								<select id="selecao"><option value="0">Selecionar empresa emissora</option></select>
+								<input type="button" value="Cadastrar Nota" id='btnCadastrar' class="botao" onclick="cadastrarNota();" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<footer id="footer">
+		<div
+			class="d-flex flex-column flex-md-row flex-lg-row justify-content-between me-lg-5 ms-lg-5 me-md-3 ms-md-3 me-sm-1 ms-sm-1">
+			<div
+				class="d-flex flex-sm-row flex-md-column flex-lg-column mb-3 mt-3 justify-content-between justify-content-sm-between">
+				<div>
+					<h4 class="d-none d-sm-none d-md-flex d-lg-flex">Fale conosco</h4>
+					<p class="d-flex d-row mb-0 mb-sm-0 mb-md-2 mb-lg-2"> <span class="d-none d-md-flex d-lg-flex me-1">E-mail:
+						</span>
+						<span class="ms-3 ms-sm-3 ms-md-0 ms-lg-0">xxx@gmail.com</span>
+					</p>
+				</div>
+				<div class="d-flex flex-row">
+					<div class="d-flex align-items-center">
+						<h4 class="mb-0 me-2">Redes Sociais</h4>
+					</div>
+					<div class="d-flex ps-2 ps-sm-2 ps-md-0 ps-lg-0 pe-3 pe-sm-3 pe-md-0 pe-lg-0  align-items-center">
+						<i class="fab fa-instagram"></i>
+						<i class="fab fa-whatsapp ms-2"></i>
+					</div>
+
+				</div>
+			</div>
+			<div class="d-flex align-items-center justify-content-center">
+				<p class="mb-3 mb-sm-3 mb-md-0 mb-lg-0">
+					&copy; 2021 Todos os direitos reservados
+				</p>
+			</div>
+		</div>
+	</footer>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>
