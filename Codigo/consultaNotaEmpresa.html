@@ -233,14 +233,14 @@
 
             if (order === 'nome') {
                 obj.open("GET",
-                    "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=FIND('" + nome + "'%2Cnome)&sort%5B0%5D%5Bfield%5D=nome&sort%5B0%5D%5Bdirection%5D=asc", true);
+                    "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=AND(idUsuario%3D'" + localStorage.getItem('userId') + "'%2C FIND('" + nome + "'%2Cnome))&sort%5B0%5D%5Bfield%5D=nome&sort%5B0%5D%5Bdirection%5D=asc", true);
             } else if (order === 'cnpj') {
                 obj.open("GET",
-                    "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=FIND('" + nome + "'%2Cnome)&sort%5B0%5D%5Bfield%5D=CNPJ&sort%5B0%5D%5Bdirection%5D=asc", true);
+                    "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=AND(idUsuario%3D'" + localStorage.getItem('userId') + "'%2C FIND('" + nome + "'%2Cnome))&sort%5B0%5D%5Bfield%5D=CNPJ&sort%5B0%5D%5Bdirection%5D=asc", true);
 
             } else {
                 obj.open("GET",
-                    "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=FIND('" + nome + "'%2Cnome)&sort%5B0%5D%5Bfield%5D=nome&sort%5B0%5D%5Bdirection%5D=asc", true);
+                    "https://api.airtable.com/v0/appywNsqVd3gL7McU/Empresa?fields%5B%5D=nome&fields%5B%5D=CNPJ&fields%5B%5D=NotaFiscal&filterByFormula=AND(idUsuario%3D'" + localStorage.getItem('userId') + "'%2C FIND('" + nome + "'%2Cnome))&sort%5B0%5D%5Bfield%5D=nome&sort%5B0%5D%5Bdirection%5D=asc", true);
             }
 
             obj.setRequestHeader('Authorization', 'Bearer key11MS9MKtKRPWWJ');
