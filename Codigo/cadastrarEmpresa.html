@@ -454,7 +454,7 @@
                         } else
                             htmls += "<tr><td>" + listaClientes[i].fields.nome + "</td><td>" + listaClientes[i].fields.CNPJ + "</td><td><a href='#'> " + listaClientes[i].fields.NotaFiscal.length + " Notas Fiscais</a></td>";
 
-                        htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='#' title='Editar empresa.'  onclick='editarEmpresa(\"" + listaClientes[i].id + "\"); '>editar</a></div></td>";
+                        htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='#' title='Editar empresa.'  onclick='editarEmpresa(\"" + listaClientes[i].id + "\"); '><i class='fas fa-edit'></i></a></div></td>";
                         htmls += "<td><div class='me-2 d-flex justify-content-center'><a href='#' title='Excluir empresa.'  onclick='deletaEmpresa(\"" + listaClientes[i].id + "\"); '><i style='font-size:1.4rem; margin:10px auto;' class='fas fa-trash ms-1'></i></a></div></td></tr>";
                     }
                     htmls += '</table>';
