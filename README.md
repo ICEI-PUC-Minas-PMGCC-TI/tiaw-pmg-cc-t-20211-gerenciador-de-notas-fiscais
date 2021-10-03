@@ -14,16 +14,25 @@ com filtros facilitadores para localizar um ou mais documentos, seguindo critér
 objetivos, tais como data de emissão, empresa emitente; ii) cadastro de documentos
 fiscais; e iii) exclusão de documentos fiscais.
 
-## Alunos integrantes da equipe
+## Alunos integrantes da equipe I
 
 * Jéssica Alves Goulart Pacheco
 * João Pedro Torres de Souza Silva
 * Robson Ricardo Costa Vieira
 
+## Alunos integrantes da equipe II
+
+ * Daniel Felipe Coelho Freitas
+ * Jéssica Alves Goulart Pacheco
+ * João Pedro Torres de Souza Silva
+ * Pedro Henrique Amorim Sá
+ * Sarah Gomes Andrade
+
 ## Professores responsáveis
 
 * Rommel Vieira Carneio
 * João Carlos Oliveira Caetano
+* Max Do Val Machado
 
 ## Instruções de utilização
 
